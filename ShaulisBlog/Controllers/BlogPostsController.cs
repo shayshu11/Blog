@@ -17,7 +17,7 @@ namespace ShaulisBlog.Controllers
         // GET: BlogPosts
         public ActionResult Index()
         {
-            var blogPosts = db.BlogPosts.Include(b => b.Author);
+            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments);
             return View(blogPosts.ToList());
         }
 
@@ -48,10 +48,11 @@ namespace ShaulisBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,WriterId,Content,Title,PostDate")] BlogPost blogPost)
+        public ActionResult Create([Bind(Include = "ID,WriterId,Title,Content")] BlogPost blogPost)
         {
             if (ModelState.IsValid)
             {
+                blogPost.PostDate = DateTime.Now;
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -127,6 +128,66 @@ namespace ShaulisBlog.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult EditComment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+          /*  BlogPost blogPost = db.BlogPosts.Find(id);
+            if (blogPost == null)
+            {
+                return HttpNotFound();
+            }
+            */
+            return RedirectToAction("Edit", "Comments", new { id = id });
+        }
+
+        public ActionResult Comment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BlogPost blogPost = db.BlogPosts.Find(id);
+            if (blogPost == null)
+            {
+                return HttpNotFound();
+            }
+            
+            return RedirectToAction("Create", "Comments", new { postId = id });
+        }
+
+        public ActionResult DeleteComment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BlogPost blogPost = db.BlogPosts.Find(id);
+            if (blogPost == null)
+            {
+                return HttpNotFound();
+            }
+
+            return RedirectToAction("Delete", "Comments", new { Id = id });
+        }
+
+        public ActionResult DetailsComment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BlogPost blogPost = db.BlogPosts.Find(id);
+            if (blogPost == null)
+            {
+                return HttpNotFound();
+            }
+
+            return RedirectToAction("Details", "Comments", new { Id = id });
         }
     }
 }

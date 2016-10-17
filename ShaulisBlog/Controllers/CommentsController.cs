@@ -37,10 +37,10 @@ namespace ShaulisBlog.Controllers
         }
 
         // GET: Comments/Create
-        public ActionResult Create()
+        public ActionResult Create(int? postId)
         {
             ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName");
-            ViewBag.PostId = new SelectList(db.BlogPosts, "ID", "Content");
+            ViewBag.PostId = postId;
             return View();
         }
 
@@ -49,13 +49,14 @@ namespace ShaulisBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,WriterId,PostId,Content,Title,CommentDate")] Comment comment)
+        public ActionResult Create([Bind(Include = "ID,WriterId,PostId,Content,Title")] Comment comment)
         {
             if (ModelState.IsValid)
             {
+                comment.CommentDate = DateTime.Now;
                 db.Comments.Add(comment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "BlogPosts");
             }
 
             ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName", comment.WriterId);

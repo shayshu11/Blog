@@ -137,6 +137,10 @@
     <Compile Include="Migrations\201610171738358_AddComment.Designer.cs">
       <DependentUpon>201610171738358_AddComment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610171940076_AddCommentsToPost.cs" />
+    <Compile Include="Migrations\201610171940076_AddCommentsToPost.Designer.cs">
+      <DependentUpon>201610171940076_AddCommentsToPost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -195,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610171738358_AddComment.resx">
       <DependentUpon>201610171738358_AddComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610171940076_AddCommentsToPost.resx">
+      <DependentUpon>201610171940076_AddCommentsToPost.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

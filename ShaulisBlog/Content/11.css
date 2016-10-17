@@ -415,3 +415,11 @@ footer {
 		display: inherit;
 	}
 }
+
+table.table.comments-table {
+    margin-left: 20px;
+}
+
+comments-table-area {
+    padding-left: 30px;
+}
