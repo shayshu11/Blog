@@ -1,0 +1,72 @@
+﻿@model ShaulisBlog.Models.Permission
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Permission</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canPost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canPost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canDeletePost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canDeletePost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canDeleteSelfComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canDeleteSelfComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canDeleteAllComments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canDeleteAllComments)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,113 @@
+﻿@*/*------------------------------
+Web Ex2
+
+Authors:
+    Ofri Sherf      312481112
+    Shay Holzman    205619521
+------------------------------*/*@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Shauli's Blog</title>
+    <link rel="stylesheet" href="~/Content/11.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+</head>
+<body>
+    <!--audio-->
+    <audio autoplay loop>
+        <source src="~/Audio/Music.mp3" type="audio/mpeg">
+    </audio>
+    <header>
+        <h1 class="title">Ha-Blog Shel Shauli</h1>
+    </header>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="main-nav">
+                <ul class="nav navbar-nav">
+                    <li class="active">@Html.ActionLink("Blog", "Index", "Blog")</li>
+                    <li><a href="#">About</a></li>
+                    <li>@Html.ActionLink("Fan Club", "Index", "Fans")</li>
+                    <li>@Html.ActionLink("Permissions", "Index", "Permissions")</li>
+                    <li><a href="#">Contact</a></li>
+                    <li class="subscribe">
+                        <div id="transDemo2">
+                            <div class="hover">
+                                <img src="~/Images/myRss.png" width="30" height="30">
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#">Subscribe via. RSS</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section id="intro">
+        <!-- Introduction -->
+        <header>
+            <h2>Do you have questions for me?</h2>
+        </header>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+        <img src="~/Images/intro_shauli.png" alt="Shauli" />
+    </section>
+    <div id="content" style="direction:rtl">
+        <aside style="direction:ltr">
+            <section>
+                <header>
+                    <h3>Categories</h3>
+                </header>
+                <ul>
+                    <li><a href="#">Lorem ipsum dolor</a></li>
+                    <li><a href="#">Sit amet consectetur</a></li>
+                    <li><a href="#">Adipisicing elit sed</a></li>
+                </ul>
+            </section>
+            <section>
+                <header>
+                    <h3>Archives</h3>
+                </header>
+                <ul>
+                    <li><a href="#">December 2008</a></li>
+                    <li><a href="#">January 2009</a></li>
+                    <li><a href="#">February 2009</a></li>
+                    <li><a href="#">March 2009</a></li>
+                </ul>
+            </section>
+        </aside>
+        <div id="mainContent" style="direction:ltr">
+            @RenderBody()
+        </div>
+    </div>
+
+    <footer>
+        <!-- Footer -->
+        <div>
+            <section id="about">
+                <header>
+                    <h3>About</h3>
+                </header>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut la</p>
+            </section>
+            <section id="blogroll">
+                <header>
+                    <h3>Blogroll</h3>
+                </header>
+                <ul>
+                    <li><a href="#">NETTUTS+</a></li>
+                    <li><a href="#">FreelanceSwitch</a></li>
+                </ul>
+            </section>
+            <section id="popular">
+                <header>
+                    <h3>Popular</h3>
+                </header>
+                <ul>
+                    <li><a href="#">This is the title of a blog post</a></li>
+                    <li><a href="#">Lorem ipsum dolor sit amet</a></li>
+                    <li><a href="#">Consectetur adipisicing elit, sed do eiusmod</a></li>
+                </ul>
+            </section>
+        </div>
+    </footer>
+</body>
+</html>

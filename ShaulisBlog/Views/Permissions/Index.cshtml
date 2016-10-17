@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ShaulisBlog.Models.Permission>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.canPost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.canComment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.canDeletePost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.canDeleteSelfComment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.canDeleteAllComments)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.canPost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.canComment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.canDeletePost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.canDeleteSelfComment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.canDeleteAllComments)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

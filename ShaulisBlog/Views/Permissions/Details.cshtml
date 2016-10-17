@@ -1,0 +1,66 @@
+﻿@model ShaulisBlog.Models.Permission
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Permission</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canPost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canPost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canDeletePost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canDeletePost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canDeleteSelfComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canDeleteSelfComment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.canDeleteAllComments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.canDeleteAllComments)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
