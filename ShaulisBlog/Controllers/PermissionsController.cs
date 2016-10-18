@@ -20,6 +20,20 @@ namespace ShaulisBlog.Controllers
             return View(db.Permissions.ToList());
         }
 
+        public ActionResult Search(string searchString)
+        {
+            var permissions = db.Permissions;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                ////////////////////////////////////
+                // TODO: search by canComment, canPost... etc? because it's not by searchString, it is boolean
+                ////////////////////////////////////
+                // permissions = permissions.Where(b => b.type.Contains(searchString));
+                // permissions.Where(b => b.type.Contains(searchString));
+            }
+            return View(db.Permissions.ToList());
+        }
+
         // GET: Permissions/Details/5
         public ActionResult Details(int? id)
         {

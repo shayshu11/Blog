@@ -21,6 +21,16 @@ namespace ShaulisBlog.Controllers
             return View(blogPosts.ToList());
         }
 
+        public ActionResult Search(string searchString)
+        {
+            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                blogPosts = blogPosts.Where(b => b.Author.FirstName.Contains(searchString) || b.Author.LastName.Contains(searchString) || b.Content.Contains(searchString) || b.Title.Contains(searchString));
+            }
+            return View(blogPosts.ToList());
+        }
+
         // GET: BlogPosts/Details/5
         public ActionResult Details(int? id)
         {
