@@ -25,5 +25,7 @@ namespace ShaulisBlog.Models
         public String Title { get; set; }
 
         public DateTime CommentDate { get; set; }
+
+        public DateTime? UpdateDate { get; set; }
     }
 }

@@ -39,5 +39,11 @@ namespace ShaulisBlog.Models
         [ForeignKey("Permission")]
         public int permissionId { get; set; }
         public virtual Permission Permission { get; set; }
+
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Password")]
+        public string Password { get; set; }
     }
 }

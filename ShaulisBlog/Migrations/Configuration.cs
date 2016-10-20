@@ -16,28 +16,41 @@ namespace ShaulisBlog.Migrations
         {
             //This method will be called after migrating to the latest version.
 
+            //context.Fans.AddOrUpdate((f => f.ID), new Models.Fan()
+            //{
+            //    ID = 1,
+            //    Email = "ofri@gmail.com",
+            //    Password = "Ofri1111"
+            //});
 
-          context.Permissions.AddOrUpdate(new Models.Permission()
-          {
-              id = 0,
-              type = "Admin",
-              canComment = true,
-              canDeleteAllComments = true,
-              canDeletePost = true,
-              canDeleteSelfComment = true,
-              canPost = true
-          });
+            //context.Fans.AddOrUpdate((f => f.ID), new Models.Fan()
+            //{
+            //    ID = 2,
+            //    Email = "shayshu11@gmail.com",
+            //    Password = "Hi1234"
+            //});
 
-            context.Permissions.AddOrUpdate(new Models.Permission()
-            {
-                id = 1,
-                type = "User",
-                canComment = true,
-                canDeleteAllComments = false,
-                canDeletePost = false,
-                canDeleteSelfComment = true,
-                canPost = false
-            });
+            //context.Permissions.AddOrUpdate(new Models.Permission()
+            //{
+            //    id = 0,
+            //    type = "Admin",
+            //    canComment = true,
+            //    canDeleteAllComments = true,
+            //    canDeletePost = true,
+            //    canDeleteSelfComment = true,
+            //    canPost = true
+            //});
+
+            //  context.Permissions.AddOrUpdate(new Models.Permission()
+            //  {
+            //      id = 1,
+            //      type = "User",
+            //      canComment = true,
+            //      canDeleteAllComments = false,
+            //      canDeletePost = false,
+            //      canDeleteSelfComment = true,
+            //      canPost = false
+            //  });
 
             context.Fans.AddOrUpdate(new Models.Fan()
             {
@@ -47,7 +60,9 @@ namespace ShaulisBlog.Migrations
                 DateOfBirth = new DateTime(1994, 1, 30),
                 Seniority = 2,
                 ID = 1,
-                permissionId = 0
+                permissionId = 1,
+                Email = "ofri@gmail.com",
+                Password = "Ofri1111"
             });
 
             context.Fans.AddOrUpdate(new Models.Fan()
@@ -58,7 +73,9 @@ namespace ShaulisBlog.Migrations
                 DateOfBirth = new DateTime(1994, 11, 11),
                 Seniority = 1,
                 ID = 2,
-                permissionId = 0
+                permissionId = 1,
+                Email = "shayshu11@gmail.com",
+                Password = "Hi1234"
             });
 
             context.BlogPosts.AddOrUpdate(new Models.BlogPost()
@@ -66,7 +83,7 @@ namespace ShaulisBlog.Migrations
                 ID = 0,
                 Content = "Hellooooooooooooooooooooooooooooooooooooooooo",
                 Title = "hi",
-                WriterId = 1,
+                WriterId = 7,
                 PostDate = new DateTime(2016, 10, 13, 12, 30, 0),
             });
         }

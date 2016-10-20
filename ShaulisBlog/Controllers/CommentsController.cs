@@ -13,12 +13,38 @@ namespace ShaulisBlog.Controllers
     public class CommentsController : Controller
     {
         private ShaulisBlogContext db = new ShaulisBlogContext();
+        private static int currPostId;
 
         // GET: Comments
-        public ActionResult Index()
+        //public ActionResult Index()
+        //{
+        //    var comments = db.Comments.Include(c => c.Author).Include(c => c.BlogPost);
+        //    return View(comments.ToList());
+        //}
+
+        public ActionResult Index(int postId)
         {
-            var comments = db.Comments.Include(c => c.Author).Include(c => c.BlogPost);
+            currPostId = postId;
+            var comments = db.Comments.Where(c => c.PostId == postId).Include(c => c.Author).Include(c => c.BlogPost);
+            ViewBag.Post = db.BlogPosts.FirstOrDefault(b => b.ID == currPostId);
+
             return View(comments.ToList());
+        }
+
+        public ActionResult Search(string searchString)
+        {
+            var comments = db.Comments.Where(c => c.PostId == currPostId).Include(b => b.Author);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                comments = comments.Where(b => b.Author.FirstName.Contains(searchString) ||
+                                                 b.Author.LastName.Contains(searchString) ||
+                                                 b.Content.Contains(searchString) ||
+                                                 b.Title.Contains(searchString));
+            }
+            
+            ViewBag.Post = db.BlogPosts.FirstOrDefault(b => b.ID == currPostId);
+
+            return View("Index", comments.ToList());
         }
 
         // GET: Comments/Details/5
@@ -90,6 +116,7 @@ namespace ShaulisBlog.Controllers
         {
             if (ModelState.IsValid)
             {
+                comment.UpdateDate = DateTime.Now;
                 db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

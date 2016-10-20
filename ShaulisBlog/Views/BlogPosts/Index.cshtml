@@ -6,12 +6,17 @@
 
 <h2>Index</h2>
 
+@using (Html.BeginForm("Search", "BlogPosts", new { searchString = "SearchString" }))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", "", new { placeholder = "Author\\Title\\Content.." })
+        <input type="submit" value="Search" />
+    </p>
+}
+
 <p>
     @Html.ActionLink("Create New", "Create")
-    @Html.ActionLink("Searchhhhhh", "Search")
 </p>
-
-
 
 <table class="table">
     <tr>
@@ -46,9 +51,8 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID }) |
-            @Html.ActionLink("Comment", "Comment", new { id = item.ID }) | 
+            @Html.ActionLink("Comment", "Comment", new { id = item.ID })
         </td>
     </tr>
     if (item.Comments != null && item.Comments.Count > 0) {
@@ -71,29 +75,36 @@
                         <th></th>
                     </tr>
 
-                    @foreach (var comment in item.Comments)
+                    @for (var index = 0; index < item.Comments.Count && index < 5; index++)
                     {
+                        var comment = item.Comments[index];
+                        <tr>
+                            <td>
+                                @comment.Author.FirstName @comment.Author.LastName
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => comment.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => comment.Content)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => comment.CommentDate)
+                            </td>
+                            <td>
+                                @Html.ActionLink("EditComment", "EditComment", new { id = comment.ID }) |
+                                @Html.ActionLink("Delete", "DeleteComment", new { id = comment.ID })
+                            </td>
+                        </tr>
+                    }
                     <tr>
-                        <td>
-                            @comment.Author.FirstName @comment.Author.LastName
+                        <td colspan="2">
+                            @item.Comments.Count comments total.
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => comment.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => comment.Content)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => comment.CommentDate)
-                        </td>
-                        <td>
-                            @Html.ActionLink("EditComment", "EditComment", new { id = comment.ID }) |
-                            @Html.ActionLink("Details", "DetailsComment", new { id = comment.ID }) |
-                            @Html.ActionLink("Delete", "DeleteComment", new { id = comment.ID })
+                        <td colspan="3">
+                            @Html.ActionLink("View all comments..", "ViewComments", new { id = item.ID })
                         </td>
                     </tr>
-                    }
-
                 </table>
             </td>
         </tr>

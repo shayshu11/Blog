@@ -149,6 +149,14 @@
     <Compile Include="Migrations\201610171940076_AddCommentsToPost.Designer.cs">
       <DependentUpon>201610171940076_AddCommentsToPost.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610191305575_email-password-dateFormat-UpdateDates.cs" />
+    <Compile Include="Migrations\201610191305575_email-password-dateFormat-UpdateDates.Designer.cs">
+      <DependentUpon>201610191305575_email-password-dateFormat-UpdateDates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610191335266_date-formats.cs" />
+    <Compile Include="Migrations\201610191335266_date-formats.Designer.cs">
+      <DependentUpon>201610191335266_date-formats.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -185,7 +193,6 @@
     <Content Include="Views\Comments\Details.cshtml" />
     <Content Include="Views\Comments\Edit.cshtml" />
     <Content Include="Views\Comments\Index.cshtml" />
-    <Content Include="Views\BlogPosts\Search.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -212,6 +219,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610171940076_AddCommentsToPost.resx">
       <DependentUpon>201610171940076_AddCommentsToPost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610191305575_email-password-dateFormat-UpdateDates.resx">
+      <DependentUpon>201610191305575_email-password-dateFormat-UpdateDates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610191335266_date-formats.resx">
+      <DependentUpon>201610191335266_date-formats.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

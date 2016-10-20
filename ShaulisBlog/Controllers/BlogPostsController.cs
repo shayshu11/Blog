@@ -17,7 +17,7 @@ namespace ShaulisBlog.Controllers
         // GET: BlogPosts
         public ActionResult Index()
         {
-            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments);
+            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
             return View(blogPosts.ToList());
         }
 
@@ -26,9 +26,12 @@ namespace ShaulisBlog.Controllers
             var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments);
             if (!String.IsNullOrEmpty(searchString))
             {
-                blogPosts = blogPosts.Where(b => b.Author.FirstName.Contains(searchString) || b.Author.LastName.Contains(searchString) || b.Content.Contains(searchString) || b.Title.Contains(searchString));
+                blogPosts = blogPosts.Where(b => b.Author.FirstName.Contains(searchString) || 
+                                                 b.Author.LastName.Contains(searchString) || 
+                                                 b.Content.Contains(searchString) || 
+                                                 b.Title.Contains(searchString));
             }
-            return View(blogPosts.ToList());
+            return View("Index", blogPosts.ToList());
         }
 
         // GET: BlogPosts/Details/5
@@ -44,6 +47,21 @@ namespace ShaulisBlog.Controllers
                 return HttpNotFound();
             }
             return View(blogPost);
+        }
+
+        public ActionResult ViewComments(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BlogPost blogPost = db.BlogPosts.Find(id);
+            if (blogPost == null)
+            {
+                return HttpNotFound();
+            }
+
+            return RedirectToAction("Index", "Comments", new { postId = id });
         }
 
         // GET: BlogPosts/Create
@@ -97,6 +115,7 @@ namespace ShaulisBlog.Controllers
         {
             if (ModelState.IsValid)
             {
+                blogPost.UpdateDate = DateTime.Now;
                 db.Entry(blogPost).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

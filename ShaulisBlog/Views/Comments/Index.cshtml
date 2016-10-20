@@ -6,22 +6,30 @@
 
 <h2>Index</h2>
 
+Title: @this.ViewBag.Post.Title </br>
+Content: @this.ViewBag.Post.Content
+
+@using (Html.BeginForm("Search", "Comments", new { searchString = "SearchString" }))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", "", new { placeholder = "Author\\Title\\Content.." })
+        <input type="submit" value="Search" />
+    </p>
+}
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Author.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BlogPost.Content)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
+            Name
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Content)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CommentDate)
@@ -32,23 +40,19 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Author.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BlogPost.Content)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
+            @item.Author.FirstName @item.Author.LastName
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CommentDate)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>

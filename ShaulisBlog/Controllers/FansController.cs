@@ -21,6 +21,17 @@ namespace ShaulisBlog.Controllers
             return View(fans.ToList());
         }
 
+        public ActionResult Search(string searchString)
+        {
+            var fans = db.Fans.Include(b => b.Permission);
+            if (!String.IsNullOrEmpty(searchString))
+            { 
+                fans = fans.Where(b => (b.FirstName + " " + b.LastName).Contains(searchString) ||
+                                       (b.LastName + " " + b.FirstName).Contains(searchString));
+            }
+            return View("Index", fans.ToList());
+        }
+
         // GET: Fans/Details/5
         public ActionResult Details(int? id)
         {
