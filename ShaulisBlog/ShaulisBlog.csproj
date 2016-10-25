@@ -157,6 +157,10 @@
     <Compile Include="Migrations\201610191335266_date-formats.Designer.cs">
       <DependentUpon>201610191335266_date-formats.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610251135023_Add login page.cs" />
+    <Compile Include="Migrations\201610251135023_Add login page.Designer.cs">
+      <DependentUpon>201610251135023_Add login page.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -194,6 +198,7 @@
     <Content Include="Views\Comments\Edit.cshtml" />
     <Content Include="Views\Comments\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Fans\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -225,6 +230,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610191335266_date-formats.resx">
       <DependentUpon>201610191335266_date-formats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610251135023_Add login page.resx">
+      <DependentUpon>201610251135023_Add login page.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

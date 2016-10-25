@@ -41,9 +41,12 @@ namespace ShaulisBlog.Models
         public virtual Permission Permission { get; set; }
 
         [Display(Name = "Email")]
+        [Required(ErrorMessage = "Please Provide Email", AllowEmptyStrings = false)]
         public string Email { get; set; }
-
+        
         [Display(Name = "Password")]
+        [Required(ErrorMessage = "Please provide password", AllowEmptyStrings = false)]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string Password { get; set; }
     }
 }
