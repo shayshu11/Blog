@@ -20,9 +20,11 @@ namespace ShaulisBlog.Models
         public int ID { get; set; }
 
         [Display(Name = "First Name")]
+        [Required(ErrorMessage = "Please provide First Name", AllowEmptyStrings = false)]
         public string FirstName { get; set; }
 
         [Display(Name = "Last Name")]
+        [Required(ErrorMessage = "Please provide Last Name", AllowEmptyStrings = false)]
         public string LastName { get; set; }
 
         [Display(Name = "Gender")]
@@ -32,9 +34,6 @@ namespace ShaulisBlog.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]        
         public DateTime DateOfBirth { get; set; }
-
-        [Display(Name = "Seniority")]
-        public int Seniority { get; set; }
         
         [ForeignKey("Permission")]
         public int permissionId { get; set; }
@@ -42,11 +41,15 @@ namespace ShaulisBlog.Models
 
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Please Provide Email", AllowEmptyStrings = false)]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email Address is not valid")]
         public string Email { get; set; }
         
         [Display(Name = "Password")]
         [Required(ErrorMessage = "Please provide password", AllowEmptyStrings = false)]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
+        [StringLength(30, MinimumLength = 6, ErrorMessage = "Password length must be at least 6 characters")]
         public string Password { get; set; }
+
+        public string SessionID { get; set; }
     }
 }

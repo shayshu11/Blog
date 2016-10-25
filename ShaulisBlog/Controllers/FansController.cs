@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ShaulisBlog.Models;
 using System.Security.Cryptography;
+using System.Web.Routing;
 
 namespace ShaulisBlog.Controllers
 {
@@ -15,57 +16,17 @@ namespace ShaulisBlog.Controllers
     {
         private ShaulisBlogContext db = new ShaulisBlogContext();
 
-        
-    public static Int64 NextInt64()
-    {
-        var bytes = new byte[sizeof(Int64)];
-        RNGCryptoServiceProvider Gen = new RNGCryptoServiceProvider();
-        Gen.GetBytes(bytes);
-        return BitConverter.ToInt64(bytes, 0);
-    }
-
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(Fan f)
-        {
-            // this action is for handle post (login)
-            if (ModelState.IsValid) // this is check validity
-            {
-                var v = db.Fans.Where(a => a.Email.Equals(f.Email) && a.Password.Equals(f.Password)).FirstOrDefault();
-                if (v != null)
-                {
-                    Session["LoggedUserID"] = v.ID.ToString();
-                    Session["SessionID"] = NextInt64();
-                    return RedirectToAction("AfterLogin");
-                }
-                
-            }
-            return View(f);
-        }
-
-        public ActionResult AfterLogin()
-        {
-            if (Session["LoggedUserID"] != null)
-            {
-                return RedirectToAction("Index", "BlogPosts");
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
-        }
-
         // GET: Fans
         public ActionResult Index()
         {
-            var fans = db.Fans.Include(f => f.Permission);
-            return View(fans.ToList());
+            // Check if the current session is a valid SessionID fron the db
+            if (LoginController.IsCurrentSessionValid())
+            {
+                var fans = db.Fans.Include(f => f.Permission);
+                return View(fans.ToList());
+            }
+            
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult Search(string searchString)
@@ -106,13 +67,14 @@ namespace ShaulisBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,Seniority,permissionId")] Fan fan)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,Email,Password")] Fan fan)
         {
             if (ModelState.IsValid)
             {
+                fan.permissionId = 2;
                 db.Fans.Add(fan);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Login", "Login");
             }
 
             ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
@@ -140,7 +102,7 @@ namespace ShaulisBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,Seniority,permissionId")] Fan fan)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,permissionId")] Fan fan)
         {
             if (ModelState.IsValid)
             {

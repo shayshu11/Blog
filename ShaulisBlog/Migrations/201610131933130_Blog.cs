@@ -28,7 +28,6 @@ namespace ShaulisBlog.Migrations
                     LastName = c.String(),
                     Gender = c.Int(nullable: false),
                     DateOfBirth = c.DateTime(nullable: false),
-                    Seniority = c.Int(nullable: false),
                 })
                 .PrimaryKey(t => t.ID);
 
