@@ -37,6 +37,7 @@ namespace ShaulisBlog.Controllers
                 {
                     string sessionID = RandomString(64);
                     System.Web.HttpContext.Current.Session["SessionID"] = sessionID;
+                    System.Web.HttpContext.Current.Session["FirstName"] = v.FirstName;
                     v.SessionID = sessionID;
                     db.SaveChanges();
                     return RedirectToAction("Index", "BlogPosts");
@@ -66,6 +67,42 @@ namespace ShaulisBlog.Controllers
             return (false);
         }
 
+        public static bool IsAdmin()
+        {
+            object sessionId = System.Web.HttpContext.Current.Session["SessionID"];
+
+            // Check if there is a user logged in
+            if (sessionId != null)
+            {
+                // Check if the current session is an admin
+                var v = db.Fans.Include("Permission").Where(a => a.SessionID.Equals(sessionId.ToString())).FirstOrDefault();
+                if (v != null) {
+                    return (v.Permission.type.Equals(PermissionType.ADMIN));
+                }
+            }
+
+            return (false);
+        }
+
+        public static bool canPerfom(int userId, string actionName)
+        {
+            object sessionId = System.Web.HttpContext.Current.Session["SessionID"];
+
+            // Check if there is a user logged in
+            if (sessionId != null)
+            {
+                var v = db.Fans.Where(a => a.SessionID.Equals(sessionId.ToString())).FirstOrDefault();
+                if (v != null)
+                {
+                    if ((v.ID == userId) || (actionName.Equals("Delete") && IsAdmin())) {
+                        return true;
+                    }
+                }
+            }
+
+            return (false);
+        }
+        
         public ActionResult Logout()
         {
             string sessionId = System.Web.HttpContext.Current.Session["SessionID"].ToString();
@@ -80,6 +117,20 @@ namespace ShaulisBlog.Controllers
             System.Web.HttpContext.Current.Session["SessionID"] = null;
             return RedirectToAction("Login");
         }
-        
+
+        public static int getUserId()
+        {
+            object sessionId = System.Web.HttpContext.Current.Session["SessionID"];
+
+            // Check if there is a user logged in
+            if (sessionId != null)
+            {
+                // Check if the current session is an active one
+                var v = db.Fans.Where(a => a.SessionID.Equals(sessionId.ToString())).FirstOrDefault();
+                return (v.ID);
+            }
+
+            return (-1);
+        }
     }
 }

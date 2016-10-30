@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ShaulisBlog.Models.BlogPost>
+﻿@using ShaulisBlog.Controllers
+
+@model IEnumerable<ShaulisBlog.Models.BlogPost>
 
 @{
     ViewBag.Title = "Index";
@@ -50,8 +52,17 @@
             @Html.DisplayFor(modelItem => item.PostDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID }) |
+            @if (LoginController.canPerfom(item.Author.ID, "Edit"))
+            { 
+                @Html.ActionLink("Edit", "Edit", new { id=item.ID })          
+                @Html.Raw(" | ")
+            } 
+            @if (LoginController.canPerfom(item.Author.ID, "Delete"))
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID });
+                @Html.Raw(" | ")
+            }
+            
             @Html.ActionLink("Comment", "Comment", new { id = item.ID })
         </td>
     </tr>
@@ -92,8 +103,15 @@
                                 @Html.DisplayFor(modelItem => comment.CommentDate)
                             </td>
                             <td>
-                                @Html.ActionLink("EditComment", "EditComment", new { id = comment.ID }) |
-                                @Html.ActionLink("Delete", "DeleteComment", new { id = comment.ID })
+                                @if (LoginController.canPerfom(comment.Author.ID, "Edit"))
+                                {
+                                    @Html.ActionLink("Edit", "EditComment", new { id = comment.ID })
+                                    @Html.Raw(" | ")
+                                }
+                                @if (LoginController.canPerfom(comment.Author.ID, "Delete"))
+                                {
+                                    @Html.ActionLink("Delete", "DeleteComment", new { id = comment.ID })
+                                }
                             </td>
                         </tr>
                     }

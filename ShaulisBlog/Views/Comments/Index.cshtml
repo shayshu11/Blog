@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ShaulisBlog.Models.Comment>
+﻿@using ShaulisBlog.Controllers
+@model IEnumerable<ShaulisBlog.Models.Comment>
 
 @{
     ViewBag.Title = "Index";
@@ -52,8 +53,15 @@ Content: @this.ViewBag.Post.Content
             @Html.DisplayFor(modelItem => item.CommentDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @if (LoginController.canPerfom(item.Author.ID, "Edit"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) 
+                @Html.Raw(" | ")
+            }
+            @if (LoginController.canPerfom(item.Author.ID, "Delete"))
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            }
         </td>
     </tr>
 }

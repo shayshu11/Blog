@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using ShaulisBlog.Controllers
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -13,6 +15,12 @@
     </audio>
     <header>
         <h1 class="title">Ha-Blog Shel Shauli</h1>
+        Hi @HttpContext.Current.Session["FirstName"].ToString()
+        @Html.Raw("! | ")
+        @Html.ActionLink("Edit user", "Edit", "Fans", new { id = LoginController.getUserId() }, new { })
+        @Html.Raw(" | ")
+        @Html.ActionLink("Delete user", "Delete", "Fans", new { id = LoginController.getUserId() }, new { })
+        @Html.Raw(" | ")
         @Html.ActionLink("Logout", "Logout", "Login")
     </header>
     <nav class="navbar navbar-default">
@@ -21,17 +29,10 @@
                 <ul class="nav navbar-nav">
                     <li class="active">@Html.ActionLink("Blog", "Index", "BlogPosts")</li>
                     <li><a href="#">About</a></li>
-                    <li>@Html.ActionLink("Fan Club", "Index", "Fans")</li>
-                    <li>@Html.ActionLink("Permissions", "Index", "Permissions")</li>
+                    @if (LoginController.IsAdmin()) {
+                        <li>@Html.ActionLink("Fan Club", "Index", "Fans")</li>
+                    }
                     <li><a href="#">Contact</a></li>
-                    <li class="subscribe">
-                        <div id="transDemo2">
-                            <div class="hover">
-                                <img src="~/Images/myRss.png" width="30" height="30">
-                            </div>
-                        </div>
-                    </li>
-                    <li><a href="#">Subscribe via. RSS</a></li>
                 </ul>
             </div>
         </div>

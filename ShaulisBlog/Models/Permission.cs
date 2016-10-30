@@ -6,21 +6,17 @@ using System.Web;
 
 namespace ShaulisBlog.Models
 {
+    public enum PermissionType
+    {
+        ADMIN = 0,
+        USER = 1
+    }
+
     public class Permission
     {
         [Key]
         public int id { get; set; }
 
-        public string type { get; set; }
-
-        public bool canPost { get; set; }
-
-        public bool canComment { get; set; }
-
-        public bool canDeletePost { get; set; }
-
-        public bool canDeleteSelfComment { get; set; }
-
-        public bool canDeleteAllComments { get; set; }
+        public PermissionType type { get; set; }
     }
 }

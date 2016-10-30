@@ -18,6 +18,8 @@ namespace ShaulisBlog.Controllers
         public ActionResult Index()
         {
             var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
+            var temp = from post in blogPosts
+                       select new { Comments = post.Comments,  };
             return View(blogPosts.ToList());
         }
 
@@ -76,11 +78,12 @@ namespace ShaulisBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,WriterId,Title,Content")] BlogPost blogPost)
+        public ActionResult Create([Bind(Include = "ID,Title,Content")] BlogPost blogPost)
         {
             if (ModelState.IsValid)
             {
                 blogPost.PostDate = DateTime.Now;
+                blogPost.WriterId = LoginController.getUserId();
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
                 return RedirectToAction("Index");

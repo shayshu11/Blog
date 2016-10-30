@@ -71,7 +71,8 @@ namespace ShaulisBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-                fan.permissionId = 2;
+                Permission userPerm = db.Permissions.Where(p => p.type.ToString().Equals(PermissionType.USER.ToString())).FirstOrDefault();
+                fan.permissionId = userPerm.id;
                 db.Fans.Add(fan);
                 db.SaveChanges();
                 return RedirectToAction("Login", "Login");
@@ -102,12 +103,20 @@ namespace ShaulisBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,permissionId")] Fan fan)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,permissionId,Email,Password")] Fan fan)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(fan).State = EntityState.Modified;
+                bool isSelfEdit = LoginController.getUserId() == fan.ID;
                 db.SaveChanges();
+
+                // If the user deleted himseld
+                if (isSelfEdit)
+                {
+                    RedirectToAction("Index", "BlogPosts");
+                }
+
                 return RedirectToAction("Index");
             }
             ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
@@ -135,8 +144,15 @@ namespace ShaulisBlog.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Fan fan = db.Fans.Find(id);
+            bool isSelfDelete = LoginController.getUserId() == fan.ID;
             db.Fans.Remove(fan);
             db.SaveChanges();
+
+            // If the user deleted himseld
+            if (isSelfDelete) {
+                RedirectToAction("Logout", "Login");
+            }
+
             return RedirectToAction("Index");
         }
 

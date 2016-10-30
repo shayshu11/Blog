@@ -65,8 +65,8 @@ namespace ShaulisBlog.Controllers
         // GET: Comments/Create
         public ActionResult Create(int? postId)
         {
-            ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName");
             ViewBag.PostId = postId;
+            currPostId = (int)postId;
             return View();
         }
 
@@ -75,11 +75,13 @@ namespace ShaulisBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,WriterId,PostId,Content,Title")] Comment comment)
+        public ActionResult Create([Bind(Include = "ID,Content,Title")] Comment comment)
         {
             if (ModelState.IsValid)
             {
                 comment.CommentDate = DateTime.Now;
+                comment.WriterId = LoginController.getUserId();
+                comment.PostId = currPostId;
                 db.Comments.Add(comment);
                 db.SaveChanges();
                 return RedirectToAction("Index", "BlogPosts");
@@ -138,6 +140,7 @@ namespace ShaulisBlog.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(comment);
         }
 
@@ -149,7 +152,13 @@ namespace ShaulisBlog.Controllers
             Comment comment = db.Comments.Find(id);
             db.Comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            if (db.Comments.Where(c => c.PostId == currPostId).Count() == 0)
+            {
+                return RedirectToAction("Index", "BlogPosts");
+            }
+
+            return RedirectToAction("Index", new { postId = currPostId });
         }
 
         protected override void Dispose(bool disposing)

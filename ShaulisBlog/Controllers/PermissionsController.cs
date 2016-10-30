@@ -25,7 +25,7 @@ namespace ShaulisBlog.Controllers
             var permissions = db.Permissions.AsQueryable();
             if (!String.IsNullOrEmpty(searchString))
             {
-                 permissions = permissions.Where(b => b.type.Contains(searchString));
+                 permissions = permissions.Where(b => b.type.ToString().Contains(searchString));
             }
             return View("Index", permissions.ToList());
         }
