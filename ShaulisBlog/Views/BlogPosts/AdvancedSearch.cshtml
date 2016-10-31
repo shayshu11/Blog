@@ -1,0 +1,23 @@
+﻿@model ShaulisBlog.Models.BlogPost
+
+@{
+    ViewBag.Title = "Blog Posts Advanced Search";
+}
+
+<h2>Blog Posts Advanced Search</h2>
+    
+@using (Html.BeginForm("StartAdvancedSearch", "BlogPosts", new
+{ author = "Author", date = "Date", postTitle="PostTitle"}))
+{
+    <p>
+        <input type="text" name="Author" placeholder="Author" />
+        <input type="text" name="Title" placeholder="Title" />
+        <br />
+        <input type="date" name="Date" />
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -23,6 +23,36 @@ namespace ShaulisBlog.Controllers
             return View(blogPosts.ToList());
         }
 
+        // Redirect to view of Advanced Search
+        public ActionResult AdvancedSearch()
+        {
+            return View();
+        }
+
+        // This function searches by crossing multiple fields
+        public ActionResult StartAdvancedSearch(string author, string title, DateTime? date = null)
+        {
+            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
+
+            if (!String.IsNullOrEmpty(author))
+            {
+                blogPosts = blogPosts.Where(b => (b.Author.FirstName + " " + b.Author.LastName).Contains(author) ||
+                                       (b.Author.LastName + " " + b.Author.FirstName).Contains(author));
+            }
+
+            if (!String.IsNullOrEmpty(title))
+            {
+                blogPosts = blogPosts.Where(b => b.Title.Contains(title));
+            }
+
+            if(date != null)
+            {
+                blogPosts = blogPosts.Where(b => DbFunctions.TruncateTime(b.PostDate) == DbFunctions.TruncateTime(date.Value));
+            }
+
+            return View("Index", blogPosts.ToList());
+        }
+
         public ActionResult Search(string searchString)
         {
             var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments);

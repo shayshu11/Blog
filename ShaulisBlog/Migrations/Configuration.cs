@@ -30,49 +30,49 @@ namespace ShaulisBlog.Migrations
             //    Password = "Hi1234"
             //});
 
-            //context.Permissions.AddOrUpdate(new Models.Permission()
+            context.Permissions.AddOrUpdate(new Models.Permission()
+            {
+                id = 0,
+                type = Models.PermissionType.ADMIN
+            });
+
+            context.Permissions.AddOrUpdate(new Models.Permission()
+            {
+                id = 1,
+                type = Models.PermissionType.USER
+            });
+
+            //context.Fans.AddOrUpdate(new Models.Fan()
             //{
-            //    id = 0,
-            //    type = Models.PermissionType.ADMIN
+            //    FirstName = "Ofri",
+            //    LastName = "Sherf",
+            //    Gender = Models.Gender.FEMALE,
+            //    DateOfBirth = new DateTime(1994, 1, 30),
+            //    permissionId = 0,
+            //    Email = "ofri@gmail.com",
+            //    Password = "Ofri1111"
             //});
 
-            //context.Permissions.AddOrUpdate(new Models.Permission()
+            //context.Fans.AddOrUpdate(new Models.Fan()
             //{
-            //    id = 1,
-            //    type = Models.PermissionType.USER
+            //    FirstName = "Roni",
+            //    LastName = "Cohen",
+            //    Gender = Models.Gender.FEMALE,
+            //    DateOfBirth = new DateTime(1994, 1, 30),
+            //    permissionId = 1,
+            //    Email = "roni@gmail.com",
+            //    Password = "Ofri1111"
             //});
 
-            context.Fans.AddOrUpdate(new Models.Fan()
-            {
-                FirstName = "Ofri",
-                LastName = "Sherf",
-                Gender = Models.Gender.FEMALE,
-                DateOfBirth = new DateTime(1994, 1, 30),
-                permissionId = 7,
-                Email = "ofri@gmail.com",
-                Password = "Ofri1111"
-            });
-
-            context.Fans.AddOrUpdate(new Models.Fan()
-            {
-                FirstName = "Roni",
-                LastName = "Cohen",
-                Gender = Models.Gender.FEMALE,
-                DateOfBirth = new DateTime(1994, 1, 30),
-                permissionId = 6,
-                Email = "roni@gmail.com",
-                Password = "Ofri1111"
-            });
-
-            context.Fans.AddOrUpdate(new Models.Fan()
-            {
-                FirstName = "Shay",
-                LastName = "Holzman",
-                Gender = Models.Gender.FEMALE,
-                permissionId = 7,
-                Email = "shayshu11@gmail.com",
-                Password = "Hi1234"
-            });
+            //context.Fans.AddOrUpdate(new Models.Fan()
+            //{
+            //    FirstName = "Shay",
+            //    LastName = "Holzman",
+            //    Gender = Models.Gender.FEMALE,
+            //    permissionId = 0,
+            //    Email = "shayshu11@gmail.com",
+            //    Password = "Hi1234"
+            //});
 
             //context.BlogPosts.AddOrUpdate(new Models.BlogPost()
             //{

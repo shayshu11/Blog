@@ -121,7 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\BlogPostsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\FansController.cs" />
@@ -174,6 +173,10 @@
     <Compile Include="Migrations\201610291152548_permissionUpdates.Designer.cs">
       <DependentUpon>201610291152548_permissionUpdates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610311757428_changedPermissions.cs" />
+    <Compile Include="Migrations\201610311757428_changedPermissions.Designer.cs">
+      <DependentUpon>201610311757428_changedPermissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -207,6 +210,7 @@
     <Content Include="Views\Comments\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\BlogPosts\AdvancedSearch.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -250,6 +254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610291152548_permissionUpdates.resx">
       <DependentUpon>201610291152548_permissionUpdates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610311757428_changedPermissions.resx">
+      <DependentUpon>201610311757428_changedPermissions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
