@@ -109,14 +109,16 @@ namespace ShaulisBlog.Controllers
             {
                 db.Entry(fan).State = EntityState.Modified;
                 bool isSelfEdit = LoginController.getUserId() == fan.ID;
-                db.SaveChanges();
 
                 // If the user deleted himseld
                 if (isSelfEdit)
                 {
-                    RedirectToAction("Index", "BlogPosts");
+                    fan.SessionID = System.Web.HttpContext.Current.Session["SessionID"].ToString();
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "BlogPosts");
                 }
 
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
