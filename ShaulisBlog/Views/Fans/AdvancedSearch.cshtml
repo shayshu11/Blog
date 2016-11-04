@@ -1,0 +1,25 @@
+﻿@model ShaulisBlog.Models.Fan
+
+@{
+    ViewBag.Title = "Fans Advanced Search";
+}
+
+<h2>Blog Posts Advanced Search</h2>
+    
+@using (Html.BeginForm("StartAdvancedSearch", "Fans", new
+{ name = "Name", gender="Gender", date = "Date" }))
+{
+    <p>
+        <input type="text" name="Name" placeholder="Name" />
+        <br />
+        @Html.EnumDropDownListFor(x => x.Gender, "Select gender", new { @class = "form-control" })
+        <br />
+        <input type="date" name="Date" />
+        <br />
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

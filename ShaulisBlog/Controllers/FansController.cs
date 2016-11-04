@@ -29,6 +29,43 @@ namespace ShaulisBlog.Controllers
             return RedirectToAction("Login", "Login");
         }
 
+        // Redirect to view of Advanced Search
+        public ActionResult AdvancedSearch()
+        {
+            return View();
+        }
+
+        // This function searches by crossing multiple fields
+        public ActionResult StartAdvancedSearch(string name, ShaulisBlog.Models.Gender? gender, DateTime? date = null)
+        {
+            ///////////////////////////////////////
+            // TODO: insert check for admin only //
+            ///////////////////////////////////////
+
+            var fans = db.Fans.Include(b => b.Permission);
+
+            // Check if Gender was inserted by the user to search
+            if (gender != null)
+            {
+                fans = fans.Where(b => b.Gender == gender);
+            }
+
+            // Check if Name was inserted by the user to search
+            if (!String.IsNullOrEmpty(name))
+            {
+                fans = fans.Where(b => (b.FirstName + " " + b.LastName).Contains(name) ||
+                                       (b.LastName + " " + b.FirstName).Contains(name));
+            }
+
+            // Check if Date was inserted by the user to search
+            if (date != null)
+            {
+                fans = fans.Where(b => DbFunctions.TruncateTime(b.DateOfBirth) == DbFunctions.TruncateTime(date.Value));
+            }
+
+            return View("Index", fans.ToList());
+        }
+
         public ActionResult Search(string searchString)
         {
             var fans = db.Fans.Include(b => b.Permission);

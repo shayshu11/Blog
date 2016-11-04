@@ -15,7 +15,7 @@
     </audio>
     <header>
         <h1 class="title">Ha-Blog Shel Shauli</h1>
-        Hi @HttpContext.Current.Session["FirstName"].ToString()
+        @HttpContext.Current.Session["FirstName"].ToString()
         @Html.Raw("! | ")
         @Html.ActionLink("Edit user", "Edit", "Fans", new { id = LoginController.getUserId() }, new { })
         @Html.Raw(" | ")
