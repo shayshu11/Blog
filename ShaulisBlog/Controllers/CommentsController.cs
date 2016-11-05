@@ -15,13 +15,6 @@ namespace ShaulisBlog.Controllers
         private ShaulisBlogContext db = new ShaulisBlogContext();
         private static int currPostId;
 
-        // GET: Comments
-        //public ActionResult Index()
-        //{
-        //    var comments = db.Comments.Include(c => c.Author).Include(c => c.BlogPost);
-        //    return View(comments.ToList());
-        //}
-
         public ActionResult Index(int postId)
         {
             currPostId = postId;
@@ -47,15 +40,20 @@ namespace ShaulisBlog.Controllers
             
             ViewBag.Post = db.BlogPosts.FirstOrDefault(b => b.ID == currPostId);
 
+            // Creates the list of gender values for the filter combobox
+            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
             return View("Index", comments.ToList());
         }
 
         public ActionResult FilterByGender()
         {
-            var comments = db.Comments.Where(c => c.PostId == currPostId).Include(b => b.Author);
+            var comments = db.Comments.Where(c => c.PostId == currPostId);
+            string gender = "";
             if (!String.IsNullOrEmpty(Request.Form["genders"]))
             {
-                Gender wantedGender = (Gender)Enum.Parse(typeof(Gender), Request.Form["genders"]);
+                gender = Request.Form["genders"];
+                Gender wantedGender = (Gender)Enum.Parse(typeof(Gender), gender);
 
                 comments =
                     (from comment in comments
@@ -66,8 +64,8 @@ namespace ShaulisBlog.Controllers
 
             ViewBag.Post = db.BlogPosts.FirstOrDefault(b => b.ID == currPostId);
 
-            // Creates the list of gender values for the filter combobox
-            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+            // Creates the list of gender values for the filter combobox and preserve the selected option
+            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)), gender);
 
             return View("Index", comments.ToList());
         }

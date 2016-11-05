@@ -18,8 +18,10 @@ namespace ShaulisBlog.Controllers
         public ActionResult Index()
         {
             var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
-            var temp = from post in blogPosts
-                       select new { Comments = post.Comments,  };
+
+            // Creates the list of gender values for the filter combobox
+            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
             return View(blogPosts.ToList());
         }
 
@@ -50,12 +52,15 @@ namespace ShaulisBlog.Controllers
                 blogPosts = blogPosts.Where(b => DbFunctions.TruncateTime(b.PostDate) == DbFunctions.TruncateTime(date.Value));
             }
 
+            // Creates the list of gender values for the filter combobox
+            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
             return View("Index", blogPosts.ToList());
         }
 
         public ActionResult Search(string searchString)
         {
-            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments);
+            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
             if (!String.IsNullOrEmpty(searchString))
             {
                 blogPosts = blogPosts.Where(b => b.Author.FirstName.Contains(searchString) || 
@@ -63,6 +68,32 @@ namespace ShaulisBlog.Controllers
                                                  b.Content.Contains(searchString) || 
                                                  b.Title.Contains(searchString));
             }
+
+            // Creates the list of gender values for the filter combobox
+            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
+            return View("Index", blogPosts.ToList());
+        }
+
+        public ActionResult FilterByGender()
+        {
+            var blogPosts = db.BlogPosts.AsQueryable();
+            string gender = "";
+            if (!String.IsNullOrEmpty(Request.Form["genders"]))
+            {
+                gender = Request.Form["genders"];
+                Gender wantedGender = (Gender)Enum.Parse(typeof(Gender), gender);
+
+                blogPosts =
+                    (from post in blogPosts
+                     join fan in db.Fans on post.WriterId equals fan.ID
+                     where fan.Gender == wantedGender
+                     select post).Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
+            }
+
+            // Creates the list of gender values for the filter combobox and preserve the selected option
+            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)), gender);
+
             return View("Index", blogPosts.ToList());
         }
 
@@ -198,12 +229,7 @@ namespace ShaulisBlog.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-          /*  BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
-            {
-                return HttpNotFound();
-            }
-            */
+
             return RedirectToAction("Edit", "Comments", new { id = id });
         }
 

@@ -16,6 +16,14 @@
     </p>
 }
 
+@using (Html.BeginForm("FilterByGender", "BlogPosts"))
+{
+    <p>
+        @Html.DropDownList("genders")
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 <p>
     @Html.ActionLink("Advanced search", "AdvancedSearch")
 </p>
