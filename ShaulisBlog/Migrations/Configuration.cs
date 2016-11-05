@@ -30,17 +30,17 @@ namespace ShaulisBlog.Migrations
             //    Password = "Hi1234"
             //});
 
-            context.Permissions.AddOrUpdate(new Models.Permission()
-            {
-                id = 0,
-                type = Models.PermissionType.ADMIN
-            });
+            //context.Permissions.AddOrUpdate(new Models.Permission()
+            //{
+            //    id = 0,
+            //    type = Models.PermissionType.ADMIN
+            //});
 
-            context.Permissions.AddOrUpdate(new Models.Permission()
-            {
-                id = 1,
-                type = Models.PermissionType.USER
-            });
+            //context.Permissions.AddOrUpdate(new Models.Permission()
+            //{
+            //    id = 1,
+            //    type = Models.PermissionType.USER
+            //});
 
             //context.Fans.AddOrUpdate(new Models.Fan()
             //{
@@ -82,6 +82,12 @@ namespace ShaulisBlog.Migrations
             //    WriterId = 7,
             //    PostDate = new DateTime(2016, 10, 13, 12, 30, 0),
             //});
+
+            context.Locations.AddOrUpdate(new Models.Location() { 
+                Latitude = 31.969738,
+                Longitude = 34.772787,
+                Name = "Colman"
+            });
         }
     }
 }

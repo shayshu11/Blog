@@ -1,4 +1,5 @@
 ﻿@using ShaulisBlog.Controllers
+@Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
 
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,7 @@
     <title>Shauli's Blog</title>
     <link rel="stylesheet" href="~/Content/11.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
 </head>
 <body>
     <!--audio-->
@@ -27,12 +29,11 @@
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="main-nav">
                 <ul class="nav navbar-nav">
-                    <li class="active">@Html.ActionLink("Blog", "Index", "BlogPosts")</li>
-                    <li><a href="#">About</a></li>
+                    <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "BlogPosts" ? "active" : "")">@Html.ActionLink("Blog", "Index", "BlogPosts")</li>
+                    <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "About" ? "active" : "")">@Html.ActionLink("About", "Index", "About")</li>
                     @if (LoginController.IsAdmin()) {
-                        <li>@Html.ActionLink("Fan Club", "Index", "Fans")</li>
+                        <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Fans" ? "active" : "")">@Html.ActionLink("Fan Club", "Index", "Fans")</li>
                     }
-                    <li><a href="#">Contact</a></li>
                 </ul>
             </div>
         </div>
