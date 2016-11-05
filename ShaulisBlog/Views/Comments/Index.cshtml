@@ -18,6 +18,15 @@ Content: @this.ViewBag.Post.Content
     </p>
 }
 
+@using (Html.BeginForm("FilterByGender", "Comments"))
+{
+    <p>
+        @Html.DropDownList("genders")
+        @*@Html.EnumDropDownListFor(x => x. , htmlAttributes: new { @class = "form-control" })*@
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>

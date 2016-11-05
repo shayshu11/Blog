@@ -28,6 +28,9 @@ namespace ShaulisBlog.Controllers
             var comments = db.Comments.Where(c => c.PostId == postId).Include(c => c.Author).Include(c => c.BlogPost);
             ViewBag.Post = db.BlogPosts.FirstOrDefault(b => b.ID == currPostId);
 
+            // Creates the list of gender values for the filter combobox
+            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
             return View(comments.ToList());
         }
 
@@ -43,6 +46,28 @@ namespace ShaulisBlog.Controllers
             }
             
             ViewBag.Post = db.BlogPosts.FirstOrDefault(b => b.ID == currPostId);
+
+            return View("Index", comments.ToList());
+        }
+
+        public ActionResult FilterByGender()
+        {
+            var comments = db.Comments.Where(c => c.PostId == currPostId).Include(b => b.Author);
+            if (!String.IsNullOrEmpty(Request.Form["genders"]))
+            {
+                Gender wantedGender = (Gender)Enum.Parse(typeof(Gender), Request.Form["genders"]);
+
+                comments =
+                    (from comment in comments
+                    join fan in db.Fans on comment.WriterId equals fan.ID
+                    where fan.Gender == wantedGender
+                    select comment).Include(b => b.Author);
+            }
+
+            ViewBag.Post = db.BlogPosts.FirstOrDefault(b => b.ID == currPostId);
+
+            // Creates the list of gender values for the filter combobox
+            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
 
             return View("Index", comments.ToList());
         }
