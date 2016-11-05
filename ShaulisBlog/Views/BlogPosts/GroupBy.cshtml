@@ -1,0 +1,61 @@
+﻿@model IEnumerable<IGrouping<int, ShaulisBlog.Models.BlogPost>>
+
+@{
+    ViewBag.Title = "GroupBy";
+}
+
+<h2>GroupBy</h2>
+@foreach (var group in Model)
+{
+
+    <h1>
+        @group.First().Author.FirstName @Html.Raw(" ") @group.First().Author.LastName
+    </h1>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Single().Single().Author.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Single().Single().Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Single().Single().Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Single().Single().PostDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Single().Single().UpdateDate)
+        </th>
+    </tr>
+@foreach (var item in group)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UpdateDate)
+        </td>
+    </tr>
+}
+
+</table>
+<hr />
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<br />

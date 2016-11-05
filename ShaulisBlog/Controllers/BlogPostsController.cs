@@ -31,6 +31,18 @@ namespace ShaulisBlog.Controllers
             return View();
         }
 
+        // Redirect to the group by user view
+        public ActionResult GroupBy()
+        {
+            var blogPosts = db.BlogPosts.Include(b => b.Author).ToList();
+
+            var blogPostsGrouped =
+                (from post in blogPosts
+                 group post by post.WriterId);
+
+            return View(blogPostsGrouped);
+        }
+
         // This function searches by crossing multiple fields
         public ActionResult StartAdvancedSearch(string author, string title, DateTime? date = null)
         {

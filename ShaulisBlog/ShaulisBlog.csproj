@@ -212,6 +212,7 @@
     <Content Include="Views\Login\Login.cshtml" />
     <Content Include="Views\BlogPosts\AdvancedSearch.cshtml" />
     <Content Include="Views\Fans\AdvancedSearch.cshtml" />
+    <Content Include="Views\BlogPosts\GroupBy.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
