@@ -38,10 +38,6 @@ namespace ShaulisBlog.Controllers
         // This function searches by crossing multiple fields
         public ActionResult StartAdvancedSearch(string name, ShaulisBlog.Models.Gender? gender, DateTime? date = null)
         {
-            ///////////////////////////////////////
-            // TODO: insert check for admin only //
-            ///////////////////////////////////////
-
             var fans = db.Fans.Include(b => b.Permission);
 
             // Check if Gender was inserted by the user to search

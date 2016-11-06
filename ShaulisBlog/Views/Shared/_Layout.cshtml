@@ -31,6 +31,7 @@
                 <ul class="nav navbar-nav">
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "BlogPosts" ? "active" : "")">@Html.ActionLink("Blog", "Index", "BlogPosts")</li>
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "About" ? "active" : "")">@Html.ActionLink("About", "Index", "About")</li>
+                    <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Facebook" ? "active" : "")">@Html.ActionLink("Facebook", "Index", "Facebook")</li>
                     @if (LoginController.IsAdmin()) {
                         <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Fans" ? "active" : "")">@Html.ActionLink("Fan Club", "Index", "Fans")</li>
                     }
