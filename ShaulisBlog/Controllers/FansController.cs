@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using ShaulisBlog.Models;
 using System.Security.Cryptography;
 using System.Web.Routing;
+using System.Globalization;
 
 namespace ShaulisBlog.Controllers
 {
@@ -106,6 +107,7 @@ namespace ShaulisBlog.Controllers
             {
                 Permission userPerm = db.Permissions.Where(p => p.type.ToString().Equals(PermissionType.USER.ToString())).FirstOrDefault();
                 fan.permissionId = userPerm.id;
+                fan.CreationDate = DateTime.Now;
                 db.Fans.Add(fan);
                 db.SaveChanges();
                 return RedirectToAction("Login", "Login");
@@ -136,7 +138,7 @@ namespace ShaulisBlog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,permissionId,Email,Password")] Fan fan)
+        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,permissionId,Email,Password,CreationDate")] Fan fan)
         {
             if (ModelState.IsValid)
             {
@@ -189,6 +191,38 @@ namespace ShaulisBlog.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Statistics()
+        {
+            return View();
+        }
+
+        // Gets the data about user registration for statistics view
+        public JsonResult GetRegisterStats()
+        {
+            var objList = new List<object>();
+            DateTimeFormatInfo mfi = new DateTimeFormatInfo();
+
+            for (int monthIndex = 5; monthIndex >= 0; monthIndex--)
+            {
+                int currMonth = (DateTime.Today.Month - monthIndex + 12) % 12;
+                int currYear = DateTime.Today.Year;
+                int womenSum, menSum;
+
+                // To save on filtering loops we first find the wanted month registrations
+                // And then filter by gender
+                var currMonthRegs = db.Fans.Where(fan => fan.CreationDate.Month == currMonth && fan.CreationDate.Year == currYear);
+
+                womenSum = currMonthRegs.Where(fan => fan.Gender == Gender.FEMALE).Count();
+                menSum = currMonthRegs.Where(fan => fan.Gender == Gender.MALE).Count();
+
+                objList.Add(new { month = mfi.GetMonthName(currMonth),
+                                  women = womenSum,
+                                  men = menSum });
+            }
+
+            return Json(objList, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

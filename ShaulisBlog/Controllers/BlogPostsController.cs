@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ShaulisBlog.Models;
+using System.Globalization;
 
 namespace ShaulisBlog.Controllers
 {
@@ -288,6 +289,44 @@ namespace ShaulisBlog.Controllers
             }
 
             return RedirectToAction("Details", "Comments", new { Id = id });
+        }
+
+
+        public ActionResult Statistics()
+        {
+            return View();
+        }
+
+        // Gets the data about user registration for statistics view
+        public JsonResult GetPostsStats()
+        {
+            var objList = new List<object>();
+            DateTimeFormatInfo mfi = new DateTimeFormatInfo();
+
+            for (int monthIndex = 5; monthIndex >= 0; monthIndex--)
+            {
+                int currMonth = (DateTime.Today.Month - monthIndex + 12) % 12;
+                int currYear = DateTime.Today.Year;
+                int womenSum, menSum;
+
+                // To save on filtering loops we first find the wanted month registrations
+                // And then filter by gender
+                var currMonthRegs = db.BlogPosts
+                    .Where(post => post.PostDate.Month == currMonth && post.PostDate.Year == currYear)
+                    .Include("Author");
+
+                womenSum = currMonthRegs.Where(post => post.Author.Gender == Gender.FEMALE).Count();
+                menSum = currMonthRegs.Where(post => post.Author.Gender == Gender.MALE).Count();
+
+                objList.Add(new
+                {
+                    month = mfi.GetMonthName(currMonth),
+                    women = womenSum,
+                    men = menSum
+                });
+            }
+
+            return Json(objList, JsonRequestBehavior.AllowGet);
         }
     }
 }

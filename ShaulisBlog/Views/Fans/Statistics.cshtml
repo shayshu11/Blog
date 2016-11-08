@@ -1,0 +1,33 @@
+﻿<script src="//d3js.org/d3.v3.min.js"></script>
+
+<style>
+    
+graphDiv {
+        font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .bar {
+        fill: steelblue;
+    }
+
+    .x.axis path {
+        display: none;
+    }
+</style>
+
+@{
+    ViewBag.Title = "Statistics";
+}
+
+<h2>Statistics</h2>
+
+<div class="graphDiv"></div>
+
+@Scripts.Render("~/Scripts/FanStatistics.js")

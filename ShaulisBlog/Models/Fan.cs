@@ -34,7 +34,12 @@ namespace ShaulisBlog.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]        
         public DateTime DateOfBirth { get; set; }
-        
+
+        [Display(Name = "Creation Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime CreationDate { get; set; }
+
         [ForeignKey("Permission")]
         public int permissionId { get; set; }
         public virtual Permission Permission { get; set; }

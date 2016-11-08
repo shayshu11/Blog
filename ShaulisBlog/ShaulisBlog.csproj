@@ -127,6 +127,7 @@
     <Content Include="Images\sidebar_background.png" />
     <Content Include="Images\sidebar_section_background.png" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
+    <Content Include="Scripts\FanStatistics.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -135,6 +136,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Map.js" />
+    <Content Include="Scripts\PostStatistics.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +208,10 @@
     <Compile Include="Migrations\201611051439507_locations take two.Designer.cs">
       <DependentUpon>201611051439507_locations take two.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611081223108_added creation date to Fan.cs" />
+    <Compile Include="Migrations\201611081223108_added creation date to Fan.Designer.cs">
+      <DependentUpon>201611081223108_added creation date to Fan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -220,7 +226,6 @@
     <Content Include="packages.config" />
     <Content Include="Images\Fonts\Economica-Bold.ttf" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Blog\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\BlogPosts\Create.cshtml" />
@@ -245,6 +250,8 @@
     <Content Include="Views\BlogPosts\GroupBy.cshtml" />
     <Content Include="Views\About\Index.cshtml" />
     <Content Include="Views\Facebook\Index.cshtml" />
+    <Content Include="Views\Fans\Statistics.cshtml" />
+    <Content Include="Views\BlogPosts\Statistics.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -254,7 +261,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Locations\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201610131933130_Blog.resx">
@@ -298,6 +304,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611051439507_locations take two.resx">
       <DependentUpon>201611051439507_locations take two.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611081223108_added creation date to Fan.resx">
+      <DependentUpon>201611081223108_added creation date to Fan.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
