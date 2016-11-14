@@ -102,7 +102,9 @@ namespace ShaulisBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-                comment.CommentDate = DateTime.Now;
+                var date = DateTime.Now;
+                comment.CommentDate = date;
+                comment.UpdateDate = date;
                 comment.WriterId = LoginController.getUserId();
                 comment.PostId = currPostId;
                 db.Comments.Add(comment);

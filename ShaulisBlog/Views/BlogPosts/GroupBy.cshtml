@@ -29,7 +29,7 @@
             @Html.DisplayNameFor(model => model.Single().Single().UpdateDate)
         </th>
     </tr>
-@foreach (var item in group)
+@foreach (var item in group.OrderByDescending(x => x.UpdateDate))
 {
     <tr>
         <td>

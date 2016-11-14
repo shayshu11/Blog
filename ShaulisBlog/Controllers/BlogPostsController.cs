@@ -156,7 +156,9 @@ namespace ShaulisBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-                blogPost.PostDate = DateTime.Now;
+                var date = DateTime.Now;
+                blogPost.PostDate = date;
+                blogPost.UpdateDate = date;
                 blogPost.WriterId = LoginController.getUserId();
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();

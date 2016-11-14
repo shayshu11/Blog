@@ -62,7 +62,7 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.OrderByDescending(post => post.UpdateDate)) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Author.FirstName)
@@ -95,6 +95,7 @@
         </td>
     </tr>
     if (item.Comments != null && item.Comments.Count > 0) {
+        var comments = item.Comments.OrderByDescending(comm => comm.UpdateDate).ToList();
         <tr>
             <td colspan="5" class="comments-table-area">
                 <table class="table comments-table">
@@ -114,9 +115,9 @@
                         <th></th>
                     </tr>
 
-                    @for (var index = 0; index < item.Comments.Count && index < 5; index++)
+                    @for (var index = 0; index < comments.Count && index < 5; index++)
                     {
-                        var comment = item.Comments[index];
+                        var comment = comments[index];
                         <tr>
                             <td>
                                 @comment.Author.FirstName @comment.Author.LastName

@@ -46,7 +46,7 @@ Content: @this.ViewBag.Post.Content
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.OrderByDescending(comm => comm.UpdateDate)) {
     <tr>
         <td>
             @item.Author.FirstName @item.Author.LastName
