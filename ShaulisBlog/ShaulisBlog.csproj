@@ -114,7 +114,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Audio\Music.mp3" />
     <Content Include="Content\11.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
@@ -126,6 +125,7 @@
     <Content Include="Images\rss.png" />
     <Content Include="Images\sidebar_background.png" />
     <Content Include="Images\sidebar_section_background.png" />
+    <Content Include="Fonts\economica-bold.ttf" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\FanStatistics.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -137,10 +137,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\Map.js" />
     <Content Include="Scripts\PostStatistics.js" />
+    <Content Include="Video\Video.mp4" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ExtrasController.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\BlogPostsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
@@ -212,6 +214,10 @@
     <Compile Include="Migrations\201611081223108_added creation date to Fan.Designer.cs">
       <DependentUpon>201611081223108_added creation date to Fan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611101351145_Deleted password length requirement from Fan model.cs" />
+    <Compile Include="Migrations\201611101351145_Deleted password length requirement from Fan model.Designer.cs">
+      <DependentUpon>201611101351145_Deleted password length requirement from Fan model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -252,6 +258,7 @@
     <Content Include="Views\Facebook\Index.cshtml" />
     <Content Include="Views\Fans\Statistics.cshtml" />
     <Content Include="Views\BlogPosts\Statistics.cshtml" />
+    <Content Include="Views\Extras\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -265,18 +272,23 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201610131933130_Blog.resx">
       <DependentUpon>201610131933130_Blog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610132024054_Blog-Post.resx">
       <DependentUpon>201610132024054_Blog-Post.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610132031094_Permission-Field-Update.resx">
       <DependentUpon>201610132031094_Permission-Field-Update.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610171738358_AddComment.resx">
       <DependentUpon>201610171738358_AddComment.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610171940076_AddCommentsToPost.resx">
       <DependentUpon>201610171940076_AddCommentsToPost.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610191305575_email-password-dateFormat-UpdateDates.resx">
       <DependentUpon>201610191305575_email-password-dateFormat-UpdateDates.cs</DependentUpon>
@@ -307,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611081223108_added creation date to Fan.resx">
       <DependentUpon>201611081223108_added creation date to Fan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611101351145_Deleted password length requirement from Fan model.resx">
+      <DependentUpon>201611101351145_Deleted password length requirement from Fan model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

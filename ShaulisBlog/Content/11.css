@@ -1,12 +1,4 @@
-﻿/*------------------------------
-Web Ex2
-
-Authors:
-    Ofri Sherf      312481112
-    Shay Holzman    205619521
-------------------------------*/
-
-/* Makeshift CSS Reset */
+﻿/* Makeshift CSS Reset */
 * {
     margin: 0;
     padding: 0;
@@ -22,14 +14,14 @@ h1 {
     text-shadow: 3px 3px #DDDDDD;
 }
 
-/* Customized font */
-@font-face {
-    font-family: myFirstFont;
-    src: url(/fonts/Economica-Bold.ttf);
+@font-face{
+    font-family: font;
+    font-size: 200%;
+    src: url(/Fonts/economica-bold.ttf);
 }
 
 div {
-    font-family: myFirstFont;
+    font-family: font;
 }
 
 body {
@@ -119,7 +111,8 @@ nav {
     -webkit-background-size: 100%;
     -o-background-size: 100%;
     -khtml-background-size: 100%;
-    /* Border-radius not implemented yet */
+    /* 
+         not implemented yet */
     -moz-border-radius: 22px;
     -webkit-border-radius: 22px;
 }
@@ -170,7 +163,6 @@ nav {
 aside {
     display: table-cell;
     width: 300px;
-    background: url("images/sidebar_background.png") top left;
 }
 
 

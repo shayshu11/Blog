@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Extras";
+}
+
+    <title>Shauli's blog</title>
+
+<section>
+    <h2>Shauli's favorite flower:</h2>
+
+    <div style="display:none;">
+        <img id="flower" src="~/Images/flower.png" alt="Shauli's favorite flower" width="284" height="209">
+    </div>
+
+    <canvas id="canvas" width="285" height="220"
+            style="border:0px none black;"></canvas>
+
+    <script>
+        var c = document.getElementById("canvas");
+        var ctx = c.getContext("2d");
+        var img = document.getElementById("flower");
+        ctx.drawImage(img, 10, 10);
+    </script>
+
+    </br></br>
+    <h2>Check out this video clip</h2>
+    <video width="400" controls>
+        <source src="~/Video/Video.mp4" type="video/mp4">
+    </video>
+</section>

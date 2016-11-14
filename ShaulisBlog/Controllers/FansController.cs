@@ -10,12 +10,21 @@ using ShaulisBlog.Models;
 using System.Security.Cryptography;
 using System.Web.Routing;
 using System.Globalization;
+using System.Text;
 
 namespace ShaulisBlog.Controllers
 {
     public class FansController : Controller
     {
         private ShaulisBlogContext db = new ShaulisBlogContext();
+
+        // Hash user password
+        public static string HashString(string password, string salt)
+        {
+            Rfc2898DeriveBytes k2 = new Rfc2898DeriveBytes(password, System.Text.Encoding.UTF8.GetBytes(salt));
+            var result = System.Text.Encoding.UTF8.GetString(k2.GetBytes(128));
+            return result;
+        }
 
         // GET: Fans
         public ActionResult Index()
@@ -33,67 +42,100 @@ namespace ShaulisBlog.Controllers
         // Redirect to view of Advanced Search
         public ActionResult AdvancedSearch()
         {
-            return View();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                return View();
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // This function searches by crossing multiple fields
         public ActionResult StartAdvancedSearch(string name, ShaulisBlog.Models.Gender? gender, DateTime? date = null)
         {
-            var fans = db.Fans.Include(b => b.Permission);
-
-            // Check if Gender was inserted by the user to search
-            if (gender != null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                fans = fans.Where(b => b.Gender == gender);
+                var fans = db.Fans.Include(b => b.Permission);
+
+                // Check if Gender was inserted by the user to search
+                if (gender != null)
+                {
+                    fans = fans.Where(b => b.Gender == gender);
+                }
+
+                // Check if Name was inserted by the user to search
+                if (!String.IsNullOrEmpty(name))
+                {
+                    fans = fans.Where(b => (b.FirstName + " " + b.LastName).Contains(name) ||
+                                           (b.LastName + " " + b.FirstName).Contains(name));
+                }
+
+                // Check if Date was inserted by the user to search
+                if (date != null)
+                {
+                    fans = fans.Where(b => DbFunctions.TruncateTime(b.DateOfBirth) == DbFunctions.TruncateTime(date.Value));
+                }
+
+                return View("Index", fans.ToList());
             }
 
-            // Check if Name was inserted by the user to search
-            if (!String.IsNullOrEmpty(name))
-            {
-                fans = fans.Where(b => (b.FirstName + " " + b.LastName).Contains(name) ||
-                                       (b.LastName + " " + b.FirstName).Contains(name));
-            }
-
-            // Check if Date was inserted by the user to search
-            if (date != null)
-            {
-                fans = fans.Where(b => DbFunctions.TruncateTime(b.DateOfBirth) == DbFunctions.TruncateTime(date.Value));
-            }
-
-            return View("Index", fans.ToList());
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult Search(string searchString)
         {
-            var fans = db.Fans.Include(b => b.Permission);
-            if (!String.IsNullOrEmpty(searchString))
-            { 
-                fans = fans.Where(b => (b.FirstName + " " + b.LastName).Contains(searchString) ||
-                                       (b.LastName + " " + b.FirstName).Contains(searchString));
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                var fans = db.Fans.Include(b => b.Permission);
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    fans = fans.Where(b => (b.FirstName + " " + b.LastName).Contains(searchString) ||
+                                           (b.LastName + " " + b.FirstName).Contains(searchString));
+                }
+                return View("Index", fans.ToList());
             }
-            return View("Index", fans.ToList());
+
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Fans/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                Fan fan = db.Fans.Find(id);
+
+                if (fan == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(fan);
             }
-            Fan fan = db.Fans.Find(id);
-            if (fan == null)
-            {
-                return HttpNotFound();
-            }
-            return View(fan);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Fans/Create
         public ActionResult Create()
         {
-            ViewBag.permissionId = new SelectList(db.Permissions, "id", "type");
-            return View();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                ViewBag.permissionId = new SelectList(db.Permissions, "id", "type");
+                return View();
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Fans/Create
@@ -103,34 +145,64 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,Email,Password")] Fan fan)
         {
-            if (ModelState.IsValid)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                Permission userPerm = db.Permissions.Where(p => p.type.ToString().Equals(PermissionType.USER.ToString())).FirstOrDefault();
-                fan.permissionId = userPerm.id;
-                fan.CreationDate = DateTime.Now;
-                db.Fans.Add(fan);
-                db.SaveChanges();
-                return RedirectToAction("Login", "Login");
+                if (ModelState.IsValid)
+                {
+                    // Check password length
+                    if (fan.Password.Length < 6)
+                    {
+                        ViewBag.Error = "Password length must be at least 6 characters";
+                    }
+                    else
+                    {
+                        string salt = fan.Email;
+
+                        // Check length of Email to determine salt (salt must be 8-byte long)
+                        if (fan.Email.Length <= 6)
+                        {
+                            salt += fan.Email;
+                        }
+
+                        // Hash the password to save to the database
+                        fan.Password = HashString(fan.Password, salt);
+                        Permission userPerm = db.Permissions.Where(p => p.type.ToString().Equals(PermissionType.USER.ToString())).FirstOrDefault();
+                        fan.permissionId = userPerm.id;
+                        fan.CreationDate = DateTime.Now;
+                        db.Fans.Add(fan);
+                        db.SaveChanges();
+                        return RedirectToAction("Login", "Login");
+                    }
+                }
+
+                ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
+                return View(fan);
             }
 
-            ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
-            return View(fan);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Fans/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Fan fan = db.Fans.Find(id);
+                if (fan == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
+                return View(fan);
             }
-            Fan fan = db.Fans.Find(id);
-            if (fan == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
-            return View(fan);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Fans/Edit/5
@@ -140,39 +212,51 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,permissionId,Email,Password,CreationDate")] Fan fan)
         {
-            if (ModelState.IsValid)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                db.Entry(fan).State = EntityState.Modified;
-                bool isSelfEdit = LoginController.getUserId() == fan.ID;
-
-                // If the user deleted himseld
-                if (isSelfEdit)
+                if (ModelState.IsValid)
                 {
-                    fan.SessionID = System.Web.HttpContext.Current.Session["SessionID"].ToString();
-                    db.SaveChanges();
-                    return RedirectToAction("Index", "BlogPosts");
-                }
+                    db.Entry(fan).State = EntityState.Modified;
+                    bool isSelfEdit = LoginController.getUserId() == fan.ID;
 
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    // If the user deleted himseld
+                    if (isSelfEdit)
+                    {
+                        fan.SessionID = System.Web.HttpContext.Current.Session["SessionID"].ToString();
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "BlogPosts");
+                    }
+
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
+                return View(fan);
             }
-            ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
-            return View(fan);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Fans/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Fan fan = db.Fans.Find(id);
+                if (fan == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(fan);
             }
-            Fan fan = db.Fans.Find(id);
-            if (fan == null)
-            {
-                return HttpNotFound();
-            }
-            return View(fan);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Fans/Delete/5
@@ -195,7 +279,13 @@ namespace ShaulisBlog.Controllers
 
         public ActionResult Statistics()
         {
-            return View();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                return View();
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // Gets the data about user registration for statistics view

@@ -17,38 +17,62 @@ namespace ShaulisBlog.Controllers
         // GET: Permissions
         public ActionResult Index()
         {
-            return View(db.Permissions.ToList());
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                return View(db.Permissions.ToList());
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult Search(string searchString)
         {
-            var permissions = db.Permissions.AsQueryable();
-            if (!String.IsNullOrEmpty(searchString))
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                 permissions = permissions.Where(b => b.type.ToString().Contains(searchString));
+                var permissions = db.Permissions.AsQueryable();
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    permissions = permissions.Where(b => b.type.ToString().Contains(searchString));
+                }
+                return View("Index", permissions.ToList());
             }
-            return View("Index", permissions.ToList());
+
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Permissions/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Permission permission = db.Permissions.Find(id);
+                if (permission == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(permission);
             }
-            Permission permission = db.Permissions.Find(id);
-            if (permission == null)
-            {
-                return HttpNotFound();
-            }
-            return View(permission);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Permissions/Create
         public ActionResult Create()
         {
-            return View();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                return View();
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Permissions/Create
@@ -58,29 +82,41 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,type,canPost,canComment,canDeletePost,canDeleteSelfComment,canDeleteAllComments")] Permission permission)
         {
-            if (ModelState.IsValid)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                db.Permissions.Add(permission);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Permissions.Add(permission);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+                return View(permission);
             }
 
-            return View(permission);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Permissions/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Permission permission = db.Permissions.Find(id);
+                if (permission == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(permission);
             }
-            Permission permission = db.Permissions.Find(id);
-            if (permission == null)
-            {
-                return HttpNotFound();
-            }
-            return View(permission);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Permissions/Edit/5
@@ -90,28 +126,40 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "id,type,canPost,canComment,canDeletePost,canDeleteSelfComment,canDeleteAllComments")] Permission permission)
         {
-            if (ModelState.IsValid)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                db.Entry(permission).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(permission).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(permission);
             }
-            return View(permission);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: Permissions/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Permission permission = db.Permissions.Find(id);
+                if (permission == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(permission);
             }
-            Permission permission = db.Permissions.Find(id);
-            if (permission == null)
-            {
-                return HttpNotFound();
-            }
-            return View(permission);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: Permissions/Delete/5

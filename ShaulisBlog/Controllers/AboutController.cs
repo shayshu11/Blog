@@ -11,7 +11,13 @@ namespace ShaulisBlog.Controllers
         // GET: About
         public ActionResult Index()
         {
-            return View();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                return View();
+            }
+
+            return RedirectToAction("Login","Login");
         }
     }
 }

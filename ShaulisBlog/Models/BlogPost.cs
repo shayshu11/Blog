@@ -14,6 +14,7 @@ namespace ShaulisBlog.Models
 
         [ForeignKey("Author")]
         public int WriterId { get; set; }
+
         public Fan Author { get; set; }
 
         public String Content { get; set; }

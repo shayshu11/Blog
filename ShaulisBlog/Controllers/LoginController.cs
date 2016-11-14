@@ -20,6 +20,20 @@ namespace ShaulisBlog.Controllers
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        // This function clears all session IDs in the Fans table to run at the Blog's startup
+        // this is for a case when there was not a proper logout
+        public static void ClearSessionIDs()
+        {
+            var v = db.Fans.AsEnumerable();
+
+            foreach (var row in v)
+            {
+                row.SessionID = null;
+            }
+
+            db.SaveChanges();
+        }
+
         public ActionResult Login()
         {
             return View();
@@ -32,17 +46,32 @@ namespace ShaulisBlog.Controllers
             // Handle post (login)
             if (ModelState.IsValid) // Check validity
             {
-                var v = db.Fans.Where(a => a.Email.Equals(Email) && a.Password.Equals(password)).FirstOrDefault();
-                if (v != null)
+                // Check password field is not empty
+                if (String.IsNullOrEmpty(Email) && String.IsNullOrEmpty(password))
                 {
-                    string sessionID = RandomString(64);
-                    System.Web.HttpContext.Current.Session["SessionID"] = sessionID;
-                    System.Web.HttpContext.Current.Session["FirstName"] = v.FirstName;
-                    v.SessionID = sessionID;
-                    db.SaveChanges();
-                    return RedirectToAction("Index", "BlogPosts");
+                    ModelState.AddModelError("InvalidCredentials", "Email and Password can not be empty");
                 }
+                else
+                {
+                    // Get the hash of the password
+                    string hashedPassword = FansController.HashString(password, Email);
+                    var v = db.Fans.Where(a => a.Email.Equals(Email) && a.Password.Equals(hashedPassword)).FirstOrDefault();
 
+                    // Check if found a username with the given password
+                    if (v == null)
+                    {
+                        ModelState.AddModelError("InvalidCredentials", "Username or password is incorrect");
+                    }
+                    else
+                    {
+                        string sessionID = RandomString(64);
+                        System.Web.HttpContext.Current.Session["SessionID"] = sessionID;
+                        System.Web.HttpContext.Current.Session["FirstName"] = v.FirstName;
+                        v.SessionID = sessionID;
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "BlogPosts");
+                    }
+                }
             }
             return View();
         }

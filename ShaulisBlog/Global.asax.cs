@@ -13,6 +13,8 @@ namespace ShaulisBlog
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            ShaulisBlog.Controllers.LoginController.ClearSessionIDs();
         }
     }
 }

@@ -3160,7 +3160,8 @@ jQuery.prototype.animate = function( prop, speed, easing, callback ) {
 ///     A string or number determining how long the animation will run.
 /// </param>
 /// <param name="easing" type="String">
-///     A string indicating which easing function to use for the transition.
+///     A string indicating which easing function to use for the 
+.
 /// </param>
 /// <param name="callback" type="Function">
 ///     A function to call once the animation is complete.

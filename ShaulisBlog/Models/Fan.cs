@@ -52,7 +52,6 @@ namespace ShaulisBlog.Models
         [Display(Name = "Password")]
         [Required(ErrorMessage = "Please provide password", AllowEmptyStrings = false)]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
-        [StringLength(30, MinimumLength = 6, ErrorMessage = "Password length must be at least 6 characters")]
         public string Password { get; set; }
 
         public string SessionID { get; set; }

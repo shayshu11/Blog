@@ -18,133 +18,187 @@ namespace ShaulisBlog.Controllers
         // GET: BlogPosts
         public ActionResult Index()
         {
-            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
 
-            // Creates the list of gender values for the filter combobox
-            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+                // Creates the list of gender values for the filter combobox
+                ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
 
-            return View(blogPosts.ToList());
+                return View(blogPosts.ToList());
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // Redirect to view of Advanced Search
         public ActionResult AdvancedSearch()
         {
-            return View();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                return View();
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // Redirect to the group by user view
         public ActionResult GroupBy()
         {
-            var blogPosts = db.BlogPosts.Include(b => b.Author).ToList();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                var blogPosts = db.BlogPosts.Include(b => b.Author).ToList();
 
-            var blogPostsGrouped =
-                (from post in blogPosts
-                 group post by post.WriterId);
+                var blogPostsGrouped =
+                    (from post in blogPosts
+                     group post by post.WriterId);
 
-            return View(blogPostsGrouped);
+                return View(blogPostsGrouped);
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // This function searches by crossing multiple fields
         public ActionResult StartAdvancedSearch(string author, string title, DateTime? date = null)
         {
-            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
-
-            if (!String.IsNullOrEmpty(author))
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                blogPosts = blogPosts.Where(b => (b.Author.FirstName + " " + b.Author.LastName).Contains(author) ||
-                                       (b.Author.LastName + " " + b.Author.FirstName).Contains(author));
+                var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
+
+                if (!String.IsNullOrEmpty(author))
+                {
+                    blogPosts = blogPosts.Where(b => (b.Author.FirstName + " " + b.Author.LastName).Contains(author) ||
+                                           (b.Author.LastName + " " + b.Author.FirstName).Contains(author));
+                }
+
+                if (!String.IsNullOrEmpty(title))
+                {
+                    blogPosts = blogPosts.Where(b => b.Title.Contains(title));
+                }
+
+                if (date != null)
+                {
+                    blogPosts = blogPosts.Where(b => DbFunctions.TruncateTime(b.PostDate) == DbFunctions.TruncateTime(date.Value));
+                }
+
+                // Creates the list of gender values for the filter combobox
+                ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
+                return View("Index", blogPosts.ToList());
             }
 
-            if (!String.IsNullOrEmpty(title))
-            {
-                blogPosts = blogPosts.Where(b => b.Title.Contains(title));
-            }
-
-            if(date != null)
-            {
-                blogPosts = blogPosts.Where(b => DbFunctions.TruncateTime(b.PostDate) == DbFunctions.TruncateTime(date.Value));
-            }
-
-            // Creates the list of gender values for the filter combobox
-            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
-
-            return View("Index", blogPosts.ToList());
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult Search(string searchString)
         {
-            var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
-            if (!String.IsNullOrEmpty(searchString))
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                blogPosts = blogPosts.Where(b => b.Author.FirstName.Contains(searchString) || 
-                                                 b.Author.LastName.Contains(searchString) || 
-                                                 b.Content.Contains(searchString) || 
-                                                 b.Title.Contains(searchString));
+                var blogPosts = db.BlogPosts.Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    blogPosts = blogPosts.Where(b => b.Author.FirstName.Contains(searchString) ||
+                                                     b.Author.LastName.Contains(searchString) ||
+                                                     b.Content.Contains(searchString) ||
+                                                     b.Title.Contains(searchString));
+                }
+
+                // Creates the list of gender values for the filter combobox
+                ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
+                return View("Index", blogPosts.ToList());
             }
 
-            // Creates the list of gender values for the filter combobox
-            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)));
-
-            return View("Index", blogPosts.ToList());
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult FilterByGender()
         {
-            var blogPosts = db.BlogPosts.AsQueryable();
-            string gender = "";
-            if (!String.IsNullOrEmpty(Request.Form["genders"]))
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                gender = Request.Form["genders"];
-                Gender wantedGender = (Gender)Enum.Parse(typeof(Gender), gender);
+                var blogPosts = db.BlogPosts.AsQueryable();
+                string gender = "";
+                if (!String.IsNullOrEmpty(Request.Form["genders"]))
+                {
+                    gender = Request.Form["genders"];
+                    Gender wantedGender = (Gender)Enum.Parse(typeof(Gender), gender);
 
-                blogPosts =
-                    (from post in blogPosts
-                     join fan in db.Fans on post.WriterId equals fan.ID
-                     where fan.Gender == wantedGender
-                     select post).Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
+                    blogPosts =
+                        (from post in blogPosts
+                         join fan in db.Fans on post.WriterId equals fan.ID
+                         where fan.Gender == wantedGender
+                         select post).Include(b => b.Author).Include(b => b.Comments).Include("Comments.Author");
+                }
+
+                // Creates the list of gender values for the filter combobox and preserve the selected option
+                ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)), gender);
+
+                return View("Index", blogPosts.ToList());
             }
 
-            // Creates the list of gender values for the filter combobox and preserve the selected option
-            ViewBag.genders = new SelectList(Enum.GetNames(typeof(Gender)), gender);
-
-            return View("Index", blogPosts.ToList());
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: BlogPosts/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                BlogPost blogPost = db.BlogPosts.Find(id);
+                if (blogPost == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(blogPost);
             }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
-            {
-                return HttpNotFound();
-            }
-            return View(blogPost);
+
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult ViewComments(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
-            {
-                return HttpNotFound();
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                BlogPost blogPost = db.BlogPosts.Find(id);
+                if (blogPost == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return RedirectToAction("Index", "Comments", new { postId = id });
             }
 
-            return RedirectToAction("Index", "Comments", new { postId = id });
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: BlogPosts/Create
         public ActionResult Create()
         {
-            ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName");
-            return View();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName");
+                return View();
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: BlogPosts/Create
@@ -154,33 +208,47 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Title,Content")] BlogPost blogPost)
         {
-            if (ModelState.IsValid)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                blogPost.PostDate = DateTime.Now;
-                blogPost.WriterId = LoginController.getUserId();
-                db.BlogPosts.Add(blogPost);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    blogPost.PostDate = DateTime.Now;
+                    blogPost.WriterId = LoginController.getUserId();
+                    db.BlogPosts.Add(blogPost);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+                ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName", blogPost.WriterId);
+                return View(blogPost);
             }
 
-            ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName", blogPost.WriterId);
-            return View(blogPost);
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: BlogPosts/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                BlogPost blogPost = db.BlogPosts.Find(id);
+                if (blogPost == null)
+                {
+                    return HttpNotFound();
+                }
+
+                ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName", blogPost.WriterId);
+                return View(blogPost);
             }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName", blogPost.WriterId);
-            return View(blogPost);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: BlogPosts/Edit/5
@@ -190,30 +258,42 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,WriterId,Content,Title,PostDate")] BlogPost blogPost)
         {
-            if (ModelState.IsValid)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                blogPost.UpdateDate = DateTime.Now;
-                db.Entry(blogPost).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    blogPost.UpdateDate = DateTime.Now;
+                    db.Entry(blogPost).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName", blogPost.WriterId);
+                return View(blogPost);
             }
-            ViewBag.WriterId = new SelectList(db.Fans, "ID", "FirstName", blogPost.WriterId);
-            return View(blogPost);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // GET: BlogPosts/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                BlogPost blogPost = db.BlogPosts.Find(id);
+                if (blogPost == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(blogPost);
             }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
-            {
-                return HttpNotFound();
-            }
-            return View(blogPost);
+
+            return RedirectToAction("Login", "Login");
         }
 
         // POST: BlogPosts/Delete/5
@@ -221,10 +301,16 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            db.BlogPosts.Remove(blogPost);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                BlogPost blogPost = db.BlogPosts.Find(id);
+                db.BlogPosts.Remove(blogPost);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         protected override void Dispose(bool disposing)
@@ -238,63 +324,93 @@ namespace ShaulisBlog.Controllers
 
         public ActionResult EditComment(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                return RedirectToAction("Edit", "Comments", new { id = id });
             }
 
-            return RedirectToAction("Edit", "Comments", new { id = id });
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult Comment(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                BlogPost blogPost = db.BlogPosts.Find(id);
+                if (blogPost == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return RedirectToAction("Create", "Comments", new { postId = id });
             }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
-            {
-                return HttpNotFound();
-            }
-            
-            return RedirectToAction("Create", "Comments", new { postId = id });
+
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult DeleteComment(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
-            {
-                return HttpNotFound();
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                BlogPost blogPost = db.BlogPosts.Find(id);
+                if (blogPost == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return RedirectToAction("Delete", "Comments", new { Id = id });
             }
 
-            return RedirectToAction("Delete", "Comments", new { Id = id });
+            return RedirectToAction("Login", "Login");
         }
 
         public ActionResult DetailsComment(int? id)
         {
-            if (id == null)
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
-            {
-                return HttpNotFound();
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                BlogPost blogPost = db.BlogPosts.Find(id);
+                if (blogPost == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return RedirectToAction("Details", "Comments", new { Id = id });
             }
 
-            return RedirectToAction("Details", "Comments", new { Id = id });
+            return RedirectToAction("Login", "Login");
         }
 
 
         public ActionResult Statistics()
         {
-            return View();
+            // Check if a user is logged in
+            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            {
+                return View();
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         // Gets the data about user registration for statistics view

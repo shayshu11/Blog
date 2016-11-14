@@ -6,39 +6,53 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
+<head>
+    <title>Shauli's blog</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+</head>
 
-<section class="login">
-    <h3>Please login to Shauli's Blog</h3>
-    <hr />
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <div class="form-group">
-                @Html.Label("Email: ", htmlAttributes: new { @class = "control-label col-md-1" })
-                <div class="col-md-10">
-                    @Html.Editor("Email", new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessage("Email", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.Label("Password: ", htmlAttributes: new { @class = "control-label col-md-1" })
-                <div class="col-md-10">
-                    @Html.Password("Password", "", htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessage("Password", new { @class = "text-danger" })
-                </div>
-            </div>
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Login" class="btn btn-default" />
-                </div>
-            </div>
+<div class="container">
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Login</h1>
+            <h3>Please login to Shauli's Blog</h3>
         </div>
-
-        <h3>Don't have a user? @Html.ActionLink("Sign up here", "Create", "Fans")</h3>
+    </div>
+    <section class="login">
         <hr />
-    }
-</section>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <div class="form-group">
+
+                    @Html.Label("Email: ", htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @Html.Editor("Email", new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessage("Email", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Password: ", htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @Html.Password("Password", "", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessage("Password", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6" style="width:200px">
+                        <input type="submit" value="Login" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+
+            <h3>Don't have a user? @Html.ActionLink("Sign up here", "Create", "Fans")</h3>
+            <hr />
+        }
+    </section>
+
+</div>
+
+

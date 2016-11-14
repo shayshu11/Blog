@@ -11,10 +11,6 @@
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
 </head>
 <body>
-    <!--audio-->
-    <audio autoplay loop>
-        <source src="~/Audio/Music.mp3" type="audio/mpeg">
-    </audio>
     <header>
         <h1 class="title">Ha-Blog Shel Shauli</h1>
         @HttpContext.Current.Session["FirstName"].ToString()
@@ -32,6 +28,9 @@
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "BlogPosts" ? "active" : "")">@Html.ActionLink("Blog", "Index", "BlogPosts")</li>
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "About" ? "active" : "")">@Html.ActionLink("About", "Index", "About")</li>
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Facebook" ? "active" : "")">@Html.ActionLink("Facebook", "Index", "Facebook")</li>
+                    
+                    <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Extras" ? "active" : "")">@Html.ActionLink("Extras", "Index", "Extras")</li>
+                    
                     @if (LoginController.IsAdmin()) {
                         <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Fans" ? "active" : "")">@Html.ActionLink("Fan Club", "Index", "Fans")</li>
                     }
