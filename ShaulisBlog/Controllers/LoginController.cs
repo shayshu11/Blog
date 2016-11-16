@@ -69,7 +69,7 @@ namespace ShaulisBlog.Controllers
                         string hashedPassword = FansController.HashString(password, Email);
 
                         // Check if found a username with the given password
-                        if (v.Password == hashedPassword)
+                        if (v.Password != hashedPassword)
                         {
                             ModelState.AddModelError("InvalidCredentials", "Username or password is incorrect");
                             ViewBag.Error = "Username or password is incorrect";
