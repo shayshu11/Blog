@@ -128,14 +128,8 @@ namespace ShaulisBlog.Controllers
         // GET: Fans/Create
         public ActionResult Create()
         {
-            // Check if a user is logged in
-            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
-            {
-                ViewBag.permissionId = new SelectList(db.Permissions, "id", "type");
-                return View();
-            }
-
-            return RedirectToAction("Login", "Login");
+            ViewBag.permissionId = new SelectList(db.Permissions, "id", "type");
+            return View();
         }
 
         // POST: Fans/Create
@@ -145,42 +139,36 @@ namespace ShaulisBlog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Gender,DateOfBirth,Email,Password")] Fan fan)
         {
-            // Check if a user is logged in
-            if (ShaulisBlog.Controllers.LoginController.IsFanLoggedIn())
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                // Check password length
+                if (fan.Password.Length < 6)
                 {
-                    // Check password length
-                    if (fan.Password.Length < 6)
-                    {
-                        ViewBag.Error = "Password length must be at least 6 characters";
-                    }
-                    else
-                    {
-                        string salt = fan.Email;
-
-                        // Check length of Email to determine salt (salt must be 8-byte long)
-                        if (fan.Email.Length <= 6)
-                        {
-                            salt += fan.Email;
-                        }
-
-                        // Hash the password to save to the database
-                        fan.Password = HashString(fan.Password, salt);
-                        Permission userPerm = db.Permissions.Where(p => p.type.ToString().Equals(PermissionType.USER.ToString())).FirstOrDefault();
-                        fan.permissionId = userPerm.id;
-                        fan.CreationDate = DateTime.Now;
-                        db.Fans.Add(fan);
-                        db.SaveChanges();
-                        return RedirectToAction("Login", "Login");
-                    }
+                    ViewBag.Error = "Password length must be at least 6 characters";
                 }
+                else
+                {
+                    string salt = fan.Email;
 
-                ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
-                return View(fan);
+                    // Check length of Email to determine salt (salt must be 8-byte long)
+                    if (fan.Email.Length <= 6)
+                    {
+                        salt += fan.Email;
+                    }
+
+                    // Hash the password to save to the database
+                    fan.Password = HashString(fan.Password, salt);
+                    Permission userPerm = db.Permissions.Where(p => p.type.ToString().Equals(PermissionType.USER.ToString())).FirstOrDefault();
+                    fan.permissionId = userPerm.id;
+                    fan.CreationDate = DateTime.Now;
+                    db.Fans.Add(fan);
+                    db.SaveChanges();
+                    return RedirectToAction("Login", "Login");
+                }
             }
 
-            return RedirectToAction("Login", "Login");
+            ViewBag.permissionId = new SelectList(db.Permissions, "id", "type", fan.permissionId);
+            return View(fan);
         }
 
         // GET: Fans/Edit/5
