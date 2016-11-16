@@ -47,29 +47,42 @@ namespace ShaulisBlog.Controllers
             if (ModelState.IsValid) // Check validity
             {
                 // Check password field is not empty
-                if (String.IsNullOrEmpty(Email) && String.IsNullOrEmpty(password))
+                if (String.IsNullOrEmpty(Email) || String.IsNullOrEmpty(password))
                 {
                     ModelState.AddModelError("InvalidCredentials", "Email and Password can not be empty");
+                    ViewBag.Error = "Email and Password can not be empty";
                 }
                 else
                 {
-                    // Get the hash of the password
-                    string hashedPassword = FansController.HashString(password, Email);
-                    var v = db.Fans.Where(a => a.Email.Equals(Email) && a.Password.Equals(hashedPassword)).FirstOrDefault();
+                    // Find a user with this username is db
+                    var v = db.Fans.Where(a => a.Email.Equals(Email)).FirstOrDefault();
 
-                    // Check if found a username with the given password
+                    // Check if the user exists first
                     if (v == null)
                     {
                         ModelState.AddModelError("InvalidCredentials", "Username or password is incorrect");
+                        ViewBag.Error = "Username or password is incorrect";
                     }
                     else
                     {
-                        string sessionID = RandomString(64);
-                        System.Web.HttpContext.Current.Session["SessionID"] = sessionID;
-                        System.Web.HttpContext.Current.Session["FirstName"] = v.FirstName;
-                        v.SessionID = sessionID;
-                        db.SaveChanges();
-                        return RedirectToAction("Index", "BlogPosts");
+                        // Get the hash of the password
+                        string hashedPassword = FansController.HashString(password, Email);
+
+                        // Check if found a username with the given password
+                        if (v.Password == hashedPassword)
+                        {
+                            ModelState.AddModelError("InvalidCredentials", "Username or password is incorrect");
+                            ViewBag.Error = "Username or password is incorrect";
+                        }
+                        else
+                        {
+                            string sessionID = RandomString(64);
+                            System.Web.HttpContext.Current.Session["SessionID"] = sessionID;
+                            System.Web.HttpContext.Current.Session["FirstName"] = v.FirstName;
+                            v.SessionID = sessionID;
+                            db.SaveChanges();
+                            return RedirectToAction("Index", "BlogPosts");
+                        }
                     }
                 }
             }
