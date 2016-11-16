@@ -14,8 +14,8 @@ namespace ShaulisBlog.Migrations
 
         protected override void Seed(ShaulisBlog.Models.ShaulisBlogContext context)
         {
-            //This method will be called after migrating to the latest version.
-            context.Fans.RemoveRange(context.Fans);
+            // This method will be called after migrating to the latest version.
+             context.Fans.RemoveRange(context.Fans);
             context.Permissions.RemoveRange(context.Permissions);
             context.Locations.RemoveRange(context.Locations);
 
@@ -48,7 +48,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = adminPermId,
                 Email = "shayshu11@gmail.com",
-                Password = "Hi1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("Hi1234567!@#", "shayshu11@gmail.com"),
                 CreationDate = new DateTime(2016, 6, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1994, 11, 11, 1, 10, 0, 0)
             });
@@ -60,7 +60,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = adminPermId,
                 Email = "ofri@gmail.com",
-                Password = "Ofri1111",
+                Password = ShaulisBlog.Controllers.FansController.HashString("Ofri1111", "ofri@gmail.com"),
                 CreationDate = new DateTime(2016, 6, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1994, 1, 30, 0, 0, 0, 0),
             });
@@ -72,7 +72,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = adminPermId,
                 Email = "roni@gmail.com",
-                Password = "Roni1111",
+                Password = ShaulisBlog.Controllers.FansController.HashString("Roni1111", "roni@gmail.com"),
                 CreationDate = new DateTime(2016, 7, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1994, 1, 30, 0, 0, 0, 0),
             });
@@ -84,7 +84,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = adminPermId,
                 Email = "galr@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "galr@gmail.com"),
                 CreationDate = new DateTime(2016, 7, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1994, 9, 11, 0, 0, 0, 0),
             });
@@ -96,7 +96,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.MALE,
                 permissionId = userPermId,
                 Email = "galco@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "galco@gmail.com"),
                 CreationDate = new DateTime(2016, 8, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1994, 9, 11, 0, 0, 0, 0),
             });
@@ -108,7 +108,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = userPermId,
                 Email = "noale@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "noale@gmail.com"),
                 CreationDate = new DateTime(2016, 8, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1994, 9, 11, 0, 0, 0, 0),
             });
@@ -120,7 +120,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.MALE,
                 permissionId = userPermId,
                 Email = "sapsap@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "sapsap@gmail.com"),
                 CreationDate = new DateTime(2016, 8, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1994, 9, 11, 0, 0, 0, 0),
             });
@@ -132,7 +132,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = userPermId,
                 Email = "tami@gmail.com",
-                Password = "tami2910",
+                Password = ShaulisBlog.Controllers.FansController.HashString("tami2910", "tami@gmail.com"),
                 CreationDate = new DateTime(2016, 9, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1961, 10, 29, 0, 0, 0, 0),
             });
@@ -144,7 +144,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.MALE,
                 permissionId = userPermId,
                 Email = "ronki@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "ronki@gmail.com"),
                 CreationDate = new DateTime(2016, 9, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1996, 9, 11, 0, 0, 0, 0),
             });
@@ -156,7 +156,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.MALE,
                 permissionId = userPermId,
                 Email = "tomersu@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "tomersu@gmail.com"),
                 CreationDate = new DateTime(2016, 9, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1996, 9, 11, 0, 0, 0, 0),
             });
@@ -168,7 +168,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.MALE,
                 permissionId = userPermId,
                 Email = "snirki@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "snirki@gmail.com"),
                 CreationDate = new DateTime(2016, 9, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1996, 9, 11, 0, 0, 0, 0),
             });
@@ -180,7 +180,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = userPermId,
                 Email = "shun@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "shun@gmail.com"),
                 CreationDate = new DateTime(2016, 10, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1997, 9, 11, 0, 0, 0, 0),
             });
@@ -192,7 +192,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = userPermId,
                 Email = "derek@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "derek@gmail.com"),
                 CreationDate = new DateTime(2016, 10, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1997, 9, 11, 0, 0, 0, 0),
             });
@@ -204,7 +204,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.MALE,
                 permissionId = userPermId,
                 Email = "pavel@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "pavel@gmail.com"),
                 CreationDate = new DateTime(2016, 10, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1992, 9, 11, 0, 0, 0, 0),
             });
@@ -216,7 +216,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.MALE,
                 permissionId = userPermId,
                 Email = "yoad@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "yoad@gmail.com"),
                 CreationDate = new DateTime(2016, 11, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1995, 9, 11, 0, 0, 0, 0),
             });
@@ -228,7 +228,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = userPermId,
                 Email = "rotemi@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "rotemi@gmail.com"),
                 CreationDate = new DateTime(2016, 11, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1995, 9, 11, 0, 0, 0, 0),
             });
@@ -240,7 +240,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.MALE,
                 permissionId = userPermId,
                 Email = "jack@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "jack@gmail.com"),
                 CreationDate = new DateTime(2016, 11, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1995, 9, 11, 0, 0, 0, 0),
             });
@@ -252,7 +252,7 @@ namespace ShaulisBlog.Migrations
                 Gender = Models.Gender.FEMALE,
                 permissionId = userPermId,
                 Email = "jennig@gmail.com",
-                Password = "gal1234",
+                Password = ShaulisBlog.Controllers.FansController.HashString("gal12345678", "jennig@gmail.com"),
                 CreationDate = new DateTime(2016, 11, 6, 0, 0, 0, 0),
                 DateOfBirth = new DateTime(1995, 9, 11, 0, 0, 0, 0),
             });

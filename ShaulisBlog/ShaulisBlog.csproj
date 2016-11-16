@@ -218,6 +218,10 @@
     <Compile Include="Migrations\201611101351145_Deleted password length requirement from Fan model.Designer.cs">
       <DependentUpon>201611101351145_Deleted password length requirement from Fan model.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611161536204_seed method test with hash.cs" />
+    <Compile Include="Migrations\201611161536204_seed method test with hash.Designer.cs">
+      <DependentUpon>201611161536204_seed method test with hash.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -321,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611101351145_Deleted password length requirement from Fan model.resx">
       <DependentUpon>201611101351145_Deleted password length requirement from Fan model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611161536204_seed method test with hash.resx">
+      <DependentUpon>201611161536204_seed method test with hash.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

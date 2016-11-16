@@ -151,7 +151,7 @@ namespace ShaulisBlog.Controllers
                     string salt = fan.Email;
 
                     // Check length of Email to determine salt (salt must be 8-byte long)
-                    if (fan.Email.Length <= 6)
+                    while (fan.Email.Length <= 6)
                     {
                         salt += fan.Email;
                     }
