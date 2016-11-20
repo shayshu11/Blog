@@ -21,10 +21,12 @@ namespace ShaulisBlog.Models
 
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "Please provide First Name", AllowEmptyStrings = false)]
+        [RegularExpression("^([a-zA-Z])+$", ErrorMessage = "Only alphabet")]
         public string FirstName { get; set; }
 
         [Display(Name = "Last Name")]
         [Required(ErrorMessage = "Please provide Last Name", AllowEmptyStrings = false)]
+        [RegularExpression("^([a-zA-Z])+$", ErrorMessage = "only alphabet")]
         public string LastName { get; set; }
 
         [Display(Name = "Gender")]
