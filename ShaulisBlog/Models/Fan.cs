@@ -16,7 +16,7 @@ namespace ShaulisBlog.Models
 
     public class Fan
     {
-        [Key]        
+        [Key]
         public int ID { get; set; }
 
         [Display(Name = "First Name")]
@@ -34,7 +34,9 @@ namespace ShaulisBlog.Models
 
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]        
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Range(typeof(DateTime), "1/1/1990", "31/12/2100",
+        ErrorMessage = "Value for {0} must be between {1} and {2}")]
         public DateTime DateOfBirth { get; set; }
 
         [Display(Name = "Creation Date")]
