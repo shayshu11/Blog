@@ -15,7 +15,9 @@ namespace ShaulisBlog.Migrations
         protected override void Seed(ShaulisBlog.Models.ShaulisBlogContext context)
         {
             // This method will be called after migrating to the latest version.
-             context.Fans.RemoveRange(context.Fans);
+            context.Comments.RemoveRange(context.Comments);
+            context.BlogPosts.RemoveRange(context.BlogPosts);
+            context.Fans.RemoveRange(context.Fans);
             context.Permissions.RemoveRange(context.Permissions);
             context.Locations.RemoveRange(context.Locations);
 

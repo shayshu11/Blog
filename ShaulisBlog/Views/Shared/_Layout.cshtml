@@ -8,7 +8,7 @@
     <title>Shauli's Blog</title>
     <link rel="stylesheet" href="~/Content/11.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="~/Content/bootstrap.min.css">
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <header>
@@ -26,7 +26,6 @@
             <div class="collapse navbar-collapse" id="main-nav">
                 <ul class="nav navbar-nav">
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "BlogPosts" ? "active" : "")">@Html.ActionLink("Blog", "Index", "BlogPosts")</li>
-                    <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "About" ? "active" : "")">@Html.ActionLink("About", "Index", "About")</li>
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Facebook" ? "active" : "")">@Html.ActionLink("Facebook", "Index", "Facebook")</li>
                     
                     <li class="@(ViewContext.RouteData.Values["controller"].ToString() == "Extras" ? "active" : "")">@Html.ActionLink("Extras", "Index", "Extras")</li>
@@ -43,30 +42,21 @@
         <header>
             <h2>Do you have questions for me?</h2>
         </header>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+        <p>I'd love to hear what you have to say. So Comment on my posts or make a post of your own!</p>
         <img src="~/Images/intro_shauli.png" alt="Shauli" />
     </section>
     <div id="content" style="direction:rtl">
         <aside style="direction:ltr">
             <section>
                 <header>
-                    <h3>Categories</h3>
+                    <h3>Like us on:</h3>
                 </header>
                 <ul>
-                    <li><a href="#">Lorem ipsum dolor</a></li>
-                    <li><a href="#">Sit amet consectetur</a></li>
-                    <li><a href="#">Adipisicing elit sed</a></li>
-                </ul>
-            </section>
-            <section>
-                <header>
-                    <h3>Archives</h3>
-                </header>
-                <ul>
-                    <li><a href="#">December 2008</a></li>
-                    <li><a href="#">January 2009</a></li>
-                    <li><a href="#">February 2009</a></li>
-                    <li><a href="#">March 2009</a></li>
+                    <li>
+                        <a href="https://www.facebook.com/ShaulisBlog/?ref=nf" target="_blank">
+                            <i class="fa fa-facebook-official"></i> Facebook
+                        </a>
+                    </li>
                 </ul>
             </section>
         </aside>
@@ -82,26 +72,7 @@
                 <header>
                     <h3>About</h3>
                 </header>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut la</p>
-            </section>
-            <section id="blogroll">
-                <header>
-                    <h3>Blogroll</h3>
-                </header>
-                <ul>
-                    <li><a href="#">NETTUTS+</a></li>
-                    <li><a href="#">FreelanceSwitch</a></li>
-                </ul>
-            </section>
-            <section id="popular">
-                <header>
-                    <h3>Popular</h3>
-                </header>
-                <ul>
-                    <li><a href="#">This is the title of a blog post</a></li>
-                    <li><a href="#">Lorem ipsum dolor sit amet</a></li>
-                    <li><a href="#">Consectetur adipisicing elit, sed do eiusmod</a></li>
-                </ul>
+                <p>@Html.ActionLink("Click here to learn more about us!", "Index", "About")</p>
             </section>
         </div>
     </footer>
